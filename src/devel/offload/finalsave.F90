@@ -202,14 +202,14 @@
    Perr = 0.5D0*(2.D0*sigma/Ro - Pdif)*Ro/sigma
 
 ! Calculate phase conservation
-   Ref = ( Vol*invPi )**(1.D0/3.D0)
+   Ref = ( Vol*invPi*0.75D0 )**(1.D0/3.D0)
    Vef = Vol*invInitVol
 
    OPEN(UNIT = 10, FILE = "runlog.out", STATUS = "NEW", POSITION = "APPEND", &
         IOSTAT = IO_ERR)
    IF ( IO_ERR == 0 ) THEN
-     WRITE(10,'(A)')'*** Multiphase Zheng-Shu-Chew LBM 3D Simulation ***'
-     WRITE(10,'(A)')'*** Offload Implementation for Intel Xeon Phi   ***'
+     WRITE(10,'(A)')'*** Multiphase Zheng-Shu-Chew LBM 3D Simulation     ***'
+     WRITE(10,'(A)')'*** OFFLOAD-DEVEL Implementation for Intel Xeon Phi ***'
      WRITE(10,*)
      WRITE(10,'(A)')'INPUT PARAMETERS'
      WRITE(10,'(A,I9)')'OMP Threads (CPU)      = ',nthreads

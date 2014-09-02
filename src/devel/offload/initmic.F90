@@ -52,20 +52,6 @@
  eps   = 1.D0
  STAGE = 0
 
-! Set vtk limits
- NPZ = 0
- NPY = 0
- NPX = 0
- DO k = zmin, zmax, xjump
-   NPZ = NPZ + 1
- END DO
- DO j = ymin, ymax, xjump
-   NPY = NPY + 1
- END DO
- DO i = xmin, xmax, xjump
-   NPX = NPX + 1
- END DO
-
 !$OMP PARALLEL
 
 !--------- Set near neighbors and order parameter ------------------------------
@@ -83,8 +69,8 @@
            +         ( DBLE(j+yl) - bubbles(p,2) )**2 &
            +         ( DBLE(k+zl) - bubbles(p,3) )**2 )
 
-         IF ( R <= ( DBLE(bubbles(p,3)) + IntWidth ) ) THEN
-           phi_mic(m) = phiStar*TANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
+         IF ( R <= ( DBLE(bubbles(p,4)) + IntWidth ) ) THEN
+           phi_mic(m) = phiStar*DTANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
          END IF
 
        END DO

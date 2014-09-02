@@ -64,8 +64,8 @@
            +         ( DBLE(j+yl) - bubbles(p,2) )**2 &
            +         ( DBLE(k+zl) - bubbles(p,3) )**2 )
 
-         IF ( R <= ( DBLE(bubbles(p,3)) + IntWidth ) ) THEN
-           phi(i,j,k) = phistar*TANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
+         IF ( R <= ( DBLE(bubbles(p,4)) + IntWidth ) ) THEN
+           phi(i,j,k) = phistar*DTANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
          END IF
 
        END DO

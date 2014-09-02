@@ -43,13 +43,13 @@
 
 ! Set output files formats and names
  IF( STAGE == 0 ) THEN
-    WRITE( filename, '(A,I3.3,A,I7.7,A)')"INIT_",vproc,"_",iStep,".vtk"
+    WRITE( filename, '(A,I7.7,A)')"INIT_",iStep,".vtk"
  ELSE
-    WRITE( filename, '(A,I3.3,A,I7.7,A)')"EVOL_",vproc,"_",iStep,".vtk"
+    WRITE( filename, '(A,I7.7,A)')"EVOL_",iStep,".vtk"
  END IF  
    
 
- OPEN(UNIT = 12, FILE = filer2, STATUS = "NEW", POSITION = "APPEND", &
+ OPEN(UNIT = 12, FILE = filename, STATUS = "NEW", POSITION = "APPEND", &
       IOSTAT = IO_ERR)
  IF ( IO_ERR == 0 ) THEN
    WRITE(12,'(A)')"# vtk DataFile Version 2.0"

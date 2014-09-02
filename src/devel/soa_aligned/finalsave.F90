@@ -153,7 +153,7 @@
    Perr = 0.5D0*(2.D0*sigma/Ro - Pdif)*Ro/sigma
 
 ! Calculate phase conservation
-   Ref = ( Vol*invPi )**(1.D0/3.D0)
+   Ref = ( Vol*invPi*0.75D0 )**(1.D0/3.D0)
    Vef = Vol*invInitVol
 
    OPEN(UNIT = 10, FILE = "runlog.out", STATUS = "NEW", POSITION = "APPEND", &

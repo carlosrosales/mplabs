@@ -51,7 +51,7 @@
 !$OMP PARALLEL
 
 ! Order parameter update
-!$OMP DO PRIVATE(i,j,m)
+!$OMP DO PRIVATE(i,j)
  DO k = 1, NZ
    DO j = 1, NY
      DO i = 1, NX
@@ -62,7 +62,7 @@
  END DO
 
 !-------- Differential terms ---------------------------------------------------
-!$OMP DO PRIVATE(i,j,m,in01,in02,in03,in04,in05,in06,in07,in08,in09,in10,in11,in12,in13,in14,in15,in16,in17,in18)
+!$OMP DO PRIVATE(i,j,in01,in02,in03,in04,in05,in06,in07,in08,in09,in10,in11,in12,in13,in14,in15,in16,in17,in18)
  DO k = 1, NZ
    DO j = 1, NY
      DO i = 1, NX
@@ -106,7 +106,7 @@
    END DO
  END DO
 
-!$OMP DO PRIVATE(i,j,m,phin,phin2,rhon,invRhon,muPhin,sFx,sFy,sFz,ux,uy,uz,Af0,Af1,Cf1,Ag0,Ag1,Eg1A, Eg2A,Eg1R,Eg2R,Vsq,UF,geq1,geq2)
+!$OMP DO PRIVATE(i,j,phin,phin2,rhon,invRhon,muPhin,sFx,sFy,sFz,ux,uy,uz,Af0,Af1,Cf1,Ag0,Ag1,Eg1A, Eg2A,Eg1R,Eg2R,Vsq,UF,geq1,geq2)
  DO k = 1, NZ
    DO j = 1, NY
      DO i = 1, NX
@@ -146,7 +146,7 @@
    Af1 = 0.5D0*Gamma*muPhin*invTauPhi
    Cf1 = invTauPhi*invEta2*phin
 
-   f(i,j,k,0,now) = invTauPhi1*f(i,j,k,0,now) + Af0 + invTauPhi*phin
+   f(i,j,k,0,nxt) = invTauPhi1*f(i,j,k,0,now) + Af0 + invTauPhi*phin
    f(i,j,k,1,now) = invTauPhi1*f(i,j,k,1,now) + Af1 + Cf1*ux
    f(i,j,k,2,now) = invTauPhi1*f(i,j,k,2,now) + Af1 - Cf1*ux
    f(i,j,k,3,now) = invTauPhi1*f(i,j,k,3,now) + Af1 + Cf1*uy
@@ -172,14 +172,14 @@
 
 ! The equilibrium g value and the force are bundled into gFs
 ! DIRECTION 0
-   g(i,j,k,0,now) = invTauRhoOne*g(i,j,k,0,now) + Eg0n*( Ag0 - rhon*Vsq ) - EgC0n*UF
+   g(i,j,k,0,nxt) = invTauRhoOne*g(i,j,k,0,now) + Eg0n*( Ag0 - rhon*Vsq ) - EgC0n*UF
 
 ! DIRECTIONS 1 & 2
    geq1(1) = Eg1A + Eg1R*( 0.5D0*ux*ux - Vsq ) + EgC1n*( ux*sFx - UF ) 
    geq2(1) = Eg1R*ux + EgC1n*sFx
 
    g(i+1,j,k,1,nxt) = invTauRhoOne*g(i,j,k,1,now) + geq1(1) + geq2(1) 
-   g(i-1,j,k,1,nxt) = invTauRhoOne*g(i,j,k,2,now) + geq1(1) - geq2(1) 
+   g(i-1,j,k,2,nxt) = invTauRhoOne*g(i,j,k,2,now) + geq1(1) - geq2(1) 
 
 ! DIRECTIONS 3 & 4
    geq1(2) = Eg1A + Eg1R*( 0.5D0*uy*uy - Vsq ) + EgC1n*( uy*sFy - UF )

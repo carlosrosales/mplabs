@@ -146,7 +146,7 @@
    Af1 = 0.5D0*Gamma*muPhin*invTauPhi
    Cf1 = invTauPhi*invEta2*phin
 
-   f(i,j,k,0,now) = invTauPhi1*f(i,j,k,0,now) + Af0 + invTauPhi*phin
+   f(i,j,k,0,nxt) = invTauPhi1*f(i,j,k,0,now) + Af0 + invTauPhi*phin
    f(i,j,k,1,now) = invTauPhi1*f(i,j,k,1,now) + Af1 + Cf1*ux
    f(i,j,k,2,now) = invTauPhi1*f(i,j,k,2,now) + Af1 - Cf1*ux
    f(i,j,k,3,now) = invTauPhi1*f(i,j,k,3,now) + Af1 + Cf1*uy
@@ -172,14 +172,14 @@
 
 ! The equilibrium g value and the force are bundled into gFs
 ! DIRECTION 0
-   g(i,j,k,0,now) = invTauRhoOne*g(i,j,k,0,now) + Eg0n*( Ag0 - rhon*Vsq ) - EgC0n*UF
+   g(i,j,k,0,nxt) = invTauRhoOne*g(i,j,k,0,now) + Eg0n*( Ag0 - rhon*Vsq ) - EgC0n*UF
 
 ! DIRECTIONS 1 & 2
    geq1(1) = Eg1A + Eg1R*( 0.5D0*ux*ux - Vsq ) + EgC1n*( ux*sFx - UF ) 
    geq2(1) = Eg1R*ux + EgC1n*sFx
 
    g(i+1,j,k,1,nxt) = invTauRhoOne*g(i,j,k,1,now) + geq1(1) + geq2(1) 
-   g(i-1,j,k,1,nxt) = invTauRhoOne*g(i,j,k,2,now) + geq1(1) - geq2(1) 
+   g(i-1,j,k,2,nxt) = invTauRhoOne*g(i,j,k,2,now) + geq1(1) - geq2(1) 
 
 ! DIRECTIONS 3 & 4
    geq1(2) = Eg1A + Eg1R*( 0.5D0*uy*uy - Vsq ) + EgC1n*( uy*sFy - UF )

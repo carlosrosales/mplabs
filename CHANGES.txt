@@ -1,7 +1,12 @@
+v1.4 (2013-12-05) Carlos Rosales Fernandez
+==========================================
+* Bugfix revision.
+* In all "devel" codes, corrected "init.F90", "collision.F90", "finalsave.F90",
+  and "stream.F90"
+
 v1.3 (2013-11-12) Carlos Rosales Fernandez
 ==========================================
 * Added MPI version of LBS3D
-* Added development versions of LBS3D
 * Corrected compiler name to FC/MPIFC in Makefiles
 
 v1.2 (2013-09-10) Carlos Rosales Fernandez

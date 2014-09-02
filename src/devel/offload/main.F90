@@ -108,7 +108,7 @@ tDataStart = omp_get_wtime()
 !DIR$ OFFLOAD_TRANSFER TARGET(MIC:0) IN( eta, eta2, invTauRhoOne, EgC0n, EgC1n, EgC2n )
 !DIR$ OFFLOAD_TRANSFER TARGET(MIC:0) IN( pConv, eps, iStep, nBubbles, IntWidth )
 !DIR$ OFFLOAD_TRANSFER TARGET(MIC:0) IN( rhoH, rhoL, phiStar, tCall, xl, yl, zl )
-!DIR$ OFFLOAD_TRANSFER TARGET(MIC:0) IN( NPX, NPY, NPZ, xmin, xmax, ymin, ymax, zmin, zmax, xjump )
+!DIR$ OFFLOAD_TRANSFER TARGET(MIC:0) IN( NPX, NPY, NPZ, xmin, xmax, ymin, ymax, zmin, zmax )
 tDataEnd = omp_get_wtime()
 tData = tDataEnd - tDataStart
 

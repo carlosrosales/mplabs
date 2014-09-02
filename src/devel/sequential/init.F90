@@ -50,9 +50,7 @@
  eps   = 1.D0
  STAGE = 0
 
-!$OMP PARALLEL
 !--------- Set near neighbors and order parameter ------------------------------
-!$OMP DO PRIVATE(i,j,m,p,R)
  DO k = 0, NZ+1
    DO j = 0, NY+1
      DO i = 0, NX+1
@@ -64,8 +62,8 @@
            +         ( DBLE(j+yl) - bubbles(p,2) )**2 &
            +         ( DBLE(k+zl) - bubbles(p,3) )**2 )
 
-         IF ( R <= ( DBLE(bubbles(p,3)) + IntWidth ) ) THEN
-           phi(i,j,k) = phistar*TANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
+         IF ( R <= ( DBLE(bubbles(p,4)) + IntWidth ) ) THEN
+           phi(i,j,k) = phistar*DTANH( 2.D0*( DBLE(bubbles(p,4)) - R )/IntWidth )
          END IF
 
        END DO
@@ -76,7 +74,6 @@
 
 
 !--------- Initialize distribution functions -----------------------------------
-!$OMP DO PRIVATE(i,j,m,lapPhiInit,phin,rhon,muPhin,Af0,Af1,Ag0,Ag1,Ag2)
  DO k = 1, NZ
    DO j = 1, NY
 !DIR$ IVDEP
@@ -153,8 +150,6 @@
  END DO
  END DO
  END DO
-
-!$OMP END PARALLEL
 
  RETURN
  END SUBROUTINE Init

@@ -47,7 +47,7 @@
        f( i,j+1,k,3, nxt ) = eta*f(i,j,k,3,now) + eta2*f(i,j+1,k,3,now)
        f( i,j-1,k,4, nxt ) = eta*f(i,j,k,4,now) + eta2*f(i,j-1,k,4,now)
        f( i,j,k+1,5, nxt ) = eta*f(i,j,k,5,now) + eta2*f(i,j,k+1,5,now)
-       f( i,j,k-1,5, nxt ) = eta*f(i,j,k,6,now) + eta2*f(i,j,k-1,6,now)
+       f( i,j,k-1,6, nxt ) = eta*f(i,j,k,6,now) + eta2*f(i,j,k-1,6,now)
 
      END DO
    END DO

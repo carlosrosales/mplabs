@@ -1,4 +1,4 @@
-=== mplabs v1.3===
+=== mplabs v1.4===
 
 Multiphase Lattice Boltzmann Suite.
 Released under GPLv3 (see file COPYING.txt).
@@ -26,6 +26,8 @@ $ make install
 
 
 === CHANGELOG ===
+Revision 1.4: (2013-12-05)
+		  * Bugfix revision. Fixed issues in development codes only.
 
 Revision 1.3: (2013-11-12) Optimized hybrid version added.
 	      * Optimized hybrid MPI+OMP version added - LBS3D-MPI.
