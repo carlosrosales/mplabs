@@ -15,7 +15,7 @@
   </div>
 <h1>src/parallel/zsc-dgr-src/update.f</h1><a href="update_8f.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00002"></a>00002 <span class="comment">! Subroutine : Update</span>
-<a name="l00003"></a>00003 <span class="comment">! Revision   : 1.0 (2008-06-15)</span>
+<a name="l00003"></a>00003 <span class="comment">! Revision   : 1.1 (2008-11-10)</span>
 <a name="l00004"></a>00004 <span class="comment">! Author     : Carlos Rosales Fernandez [carlos.rosales.fernandez(at)gmail.com]</span>
 <a name="l00005"></a>00005 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00012"></a>00012 
@@ -111,91 +111,88 @@
 <a name="l00102"></a>00102    <span class="keyword">END DO</span>
 <a name="l00103"></a>00103  <span class="keyword">END DO</span>
 <a name="l00104"></a>00104 
-<a name="l00105"></a>00105  <span class="keyword">IF</span> ( <a class="code" href="namespaceDomain.html#9cb555c716a8125f2401a60b166487d9">xOffset</a> == 1 ) <span class="keyword">THEN</span>
-<a name="l00106"></a>00106    <span class="keyword">DO</span> j = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>, <a class="code" href="namespaceDomain.html#bee94a789dc019bc7fb60941d0f59b8e">yu</a>-1
+<a name="l00105"></a>00105 <span class="comment">! Update leftmost f values which are outside this processor's momentum grid</span>
+<a name="l00106"></a>00106  <span class="keyword">DO</span> j = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>, <a class="code" href="namespaceDomain.html#bee94a789dc019bc7fb60941d0f59b8e">yu</a>-1
 <a name="l00107"></a>00107 
 <a name="l00108"></a>00108 <span class="comment">! Coordinates of source nodes for the interpolation (xs,ys)</span>
-<a name="l00109"></a>00109      xs1 = <a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>
-<a name="l00110"></a>00110      ys1 = j
-<a name="l00111"></a>00111      xs2 = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>
-<a name="l00112"></a>00112      ys2 = <a class="code" href="namespaceDomain.html#6fa01c6169fcc1b28c64f5d57f103487">ni</a>(<a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>,j,2)
+<a name="l00109"></a>00109    xs1 = <a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>
+<a name="l00110"></a>00110    ys1 = j
+<a name="l00111"></a>00111    xs2 = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>
+<a name="l00112"></a>00112    ys2 = <a class="code" href="namespaceDomain.html#6fa01c6169fcc1b28c64f5d57f103487">ni</a>(<a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>,j,2)
 <a name="l00113"></a>00113 
 <a name="l00114"></a>00114 <span class="comment">! Coordinates of target nodes for the interpolation (xt,yt)</span>
-<a name="l00115"></a>00115      xt1 = <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a>
-<a name="l00116"></a>00116      yt1 = 2*j - 1
-<a name="l00117"></a>00117      yt2 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt1,2)
-<a name="l00118"></a>00118      yt3 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt2,2)
+<a name="l00115"></a>00115    xt1 = <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a>
+<a name="l00116"></a>00116    yt1 = 2*j - 1
+<a name="l00117"></a>00117    yt2 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt1,2)
+<a name="l00118"></a>00118    yt3 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt2,2)
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120 <span class="comment">! Target 2</span>
-<a name="l00121"></a>00121      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) )
-<a name="l00122"></a>00122      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) )
-<a name="l00123"></a>00123      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1) )
+<a name="l00121"></a>00121    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) )
+<a name="l00122"></a>00122    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) )
+<a name="l00123"></a>00123    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1) )
 <a name="l00124"></a>00124 
 <a name="l00125"></a>00125 <span class="comment">! Target 5</span>
-<a name="l00126"></a>00126      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt2,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
-<a name="l00127"></a>00127      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt2,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
-<a name="l00128"></a>00128      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt2)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
+<a name="l00126"></a>00126    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt2,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
+<a name="l00127"></a>00127    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt2,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
+<a name="l00128"></a>00128    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt2)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
 <a name="l00129"></a>00129 
 <a name="l00130"></a>00130 <span class="comment">! Target 8</span>
-<a name="l00131"></a>00131      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt3,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
-<a name="l00132"></a>00132      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt3,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
-<a name="l00133"></a>00133      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt3)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
-<a name="l00134"></a>00134    <span class="keyword">END DO</span>
-<a name="l00135"></a>00135  <span class="keyword">END IF</span>
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137  <span class="keyword">IF</span> ( <a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">yOffset</a> == 1 ) <span class="keyword">THEN</span>
-<a name="l00138"></a>00138   <span class="keyword">DO</span> i = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>, <a class="code" href="namespaceDomain.html#9fbeb5b27996815645a9c112643654ae">xu</a>-1
-<a name="l00139"></a>00139 
-<a name="l00140"></a>00140 <span class="comment">! Coordinates of source nodes for the interpolation (xs,ys)</span>
-<a name="l00141"></a>00141      xs1 = i
-<a name="l00142"></a>00142      ys1 = <a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>
-<a name="l00143"></a>00143      xs2 = <a class="code" href="namespaceDomain.html#6fa01c6169fcc1b28c64f5d57f103487">ni</a>(i,<a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>,1)
-<a name="l00144"></a>00144      ys2 = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>
-<a name="l00145"></a>00145 
-<a name="l00146"></a>00146 <span class="comment">! Coordinates of target nodes for the interpolation (xt,yt)</span>
-<a name="l00147"></a>00147      xt1 = 2*i - 1
-<a name="l00148"></a>00148      yt1 = <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a>
-<a name="l00149"></a>00149      xt2 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt1,1)
-<a name="l00150"></a>00150      xt3 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt2,yt1,1)
-<a name="l00151"></a>00151 
-<a name="l00152"></a>00152 <span class="comment">! Target 4</span>
-<a name="l00153"></a>00153      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) )
-<a name="l00154"></a>00154      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) )
-<a name="l00155"></a>00155      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2) )
-<a name="l00156"></a>00156 
-<a name="l00157"></a>00157 <span class="comment">! Target 5</span>
-<a name="l00158"></a>00158      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt2,yt1,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
-<a name="l00159"></a>00159      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt2,yt1,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
-<a name="l00160"></a>00160      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt2,yt1)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
-<a name="l00161"></a>00161 
-<a name="l00162"></a>00162 <span class="comment">! Target 6</span>
-<a name="l00163"></a>00163      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt3,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
-<a name="l00164"></a>00164      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt3,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
-<a name="l00165"></a>00165      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt3,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
-<a name="l00166"></a>00166    <span class="keyword">END DO</span>
-<a name="l00167"></a>00167  <span class="keyword">END IF</span>
-<a name="l00168"></a>00168 
-<a name="l00169"></a>00169  <span class="keyword">IF</span> ( <a class="code" href="namespaceDomain.html#9cb555c716a8125f2401a60b166487d9">xOffset</a> == 1 .AND. <a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">yOffset</a> == 1 ) <span class="keyword">THEN</span>
-<a name="l00170"></a>00170 <span class="comment">! Coordinates of source nodes for the interpolation (xs,ys)</span>
-<a name="l00171"></a>00171      xs1 = <a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>
-<a name="l00172"></a>00172      ys1 = <a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>
-<a name="l00173"></a>00173      xs2 = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>
-<a name="l00174"></a>00174      ys2 = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>
-<a name="l00175"></a>00175 
-<a name="l00176"></a>00176 <span class="comment">! Coordinates of target nodes for the interpolation (xt,yt)</span>
-<a name="l00177"></a>00177      xt1 = <a class="code" href="namespaceDomain.html#479181bae2282df744c81dd4bd79507d">xlg_f</a>
-<a name="l00178"></a>00178      yt1 = <a class="code" href="namespaceDomain.html#f64110b9add1b4ab6ec9b7cb3ebaea59">ylg_f</a>
-<a name="l00179"></a>00179 
-<a name="l00180"></a>00180 <span class="comment">! Target 5</span>
-<a name="l00181"></a>00181      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
-<a name="l00182"></a>00182      <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
-<a name="l00183"></a>00183      <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
-<a name="l00184"></a>00184  <span class="keyword">END IF</span>
-<a name="l00185"></a>00185 
-<a name="l00186"></a>00186  RETURN
-<a name="l00187"></a>00187  <span class="keyword">END</span> <span class="keyword">SUBROUTINE </span><a class="code" href="update_8f.html#08475bf16e782ef8a6ac14f0960ec39f">Update</a>
+<a name="l00131"></a>00131    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt3,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
+<a name="l00132"></a>00132    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt3,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
+<a name="l00133"></a>00133    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt3)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
+<a name="l00134"></a>00134  <span class="keyword">END DO</span>
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136 <span class="comment">! Update lowermost f values which are outside this processor's momentum grid</span>
+<a name="l00137"></a>00137  <span class="keyword">DO</span> i = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>, <a class="code" href="namespaceDomain.html#9fbeb5b27996815645a9c112643654ae">xu</a>-1
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139 <span class="comment">! Coordinates of source nodes for the interpolation (xs,ys)</span>
+<a name="l00140"></a>00140    xs1 = i
+<a name="l00141"></a>00141    ys1 = <a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>
+<a name="l00142"></a>00142    xs2 = <a class="code" href="namespaceDomain.html#6fa01c6169fcc1b28c64f5d57f103487">ni</a>(i,<a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>,1)
+<a name="l00143"></a>00143    ys2 = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>
+<a name="l00144"></a>00144 
+<a name="l00145"></a>00145 <span class="comment">! Coordinates of target nodes for the interpolation (xt,yt)</span>
+<a name="l00146"></a>00146    xt1 = 2*i - 1
+<a name="l00147"></a>00147    yt1 = <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a>
+<a name="l00148"></a>00148    xt2 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt1,yt1,1)
+<a name="l00149"></a>00149    xt3 = <a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">ni_f</a>(xt2,yt1,1)
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151 <span class="comment">! Target 4</span>
+<a name="l00152"></a>00152    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) )
+<a name="l00153"></a>00153    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) )
+<a name="l00154"></a>00154    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2) )
+<a name="l00155"></a>00155 
+<a name="l00156"></a>00156 <span class="comment">! Target 5</span>
+<a name="l00157"></a>00157    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt2,yt1,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
+<a name="l00158"></a>00158    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt2,yt1,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
+<a name="l00159"></a>00159    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt2,yt1)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161 <span class="comment">! Target 6</span>
+<a name="l00162"></a>00162    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt3,yt1,1) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
+<a name="l00163"></a>00163    <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt3,yt1,2) = 0.5D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
+<a name="l00164"></a>00164    <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt3,yt1)   = 0.5D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
+<a name="l00165"></a>00165  <span class="keyword">END DO</span>
+<a name="l00166"></a>00166 
+<a name="l00167"></a>00167 <span class="comment">! Update leftmost f values which are outside this processor's momentum grid</span>
+<a name="l00168"></a>00168 <span class="comment">! Coordinates of source nodes for the interpolation (xs,ys)</span>
+<a name="l00169"></a>00169  xs1 = <a class="code" href="namespaceDomain.html#da262ed01a870b9754c536b71f0407c2">xlg</a>
+<a name="l00170"></a>00170  ys1 = <a class="code" href="namespaceDomain.html#e185fb67fe0ec09636da0d5242daf71c">ylg</a>
+<a name="l00171"></a>00171  xs2 = <a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a>
+<a name="l00172"></a>00172  ys2 = <a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a>
+<a name="l00173"></a>00173 
+<a name="l00174"></a>00174 <span class="comment">! Coordinates of target nodes for the interpolation (xt,yt)</span>
+<a name="l00175"></a>00175  xt1 = <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a>
+<a name="l00176"></a>00176  yt1 = <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a>
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178 <span class="comment">! Target 5</span>
+<a name="l00179"></a>00179  <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,1) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,1) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,1) )
+<a name="l00180"></a>00180  <a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">u_f</a>(xt1,yt1,2) = 0.25D0*( <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys1,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs1,ys2,2) + <a class="code" href="namespaceFluidParams.html#ad35e6a5408c43c3574cb591cd422f23">u</a>(xs2,ys2,2) )
+<a name="l00181"></a>00181  <a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">p_f</a>(xt1,yt1)   = 0.25D0*( <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys1)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs1,ys2)   + <a class="code" href="namespaceFluidParams.html#6c8f08e9c65673d9c79e0e711d6eab59">p</a>(xs2,ys2) )
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183  RETURN
+<a name="l00184"></a>00184  <span class="keyword">END</span> <span class="keyword">SUBROUTINE </span><a class="code" href="update_8f.html#08475bf16e782ef8a6ac14f0960ec39f">Update</a>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Jun 15 17:06:41 2008 for ZSC-2D-DGR-MPI by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Nov 10 16:42:56 2008 for ZSC-2D-DGR-MPI by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

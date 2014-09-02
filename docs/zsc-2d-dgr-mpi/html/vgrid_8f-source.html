@@ -15,7 +15,7 @@
   </div>
 <h1>src/parallel/zsc-dgr-src/vgrid.f</h1><a href="vgrid_8f.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00002"></a>00002 <span class="comment">! Subroutine : VGrid</span>
-<a name="l00003"></a>00003 <span class="comment">! Revision   : 1.0 (2008-06-15)</span>
+<a name="l00003"></a>00003 <span class="comment">! Revision   : 1.1 (2008-11-10)</span>
 <a name="l00004"></a>00004 <span class="comment">! Author     : Carlos Rosales Fernandez [carlos.rosales.fernandez(at)gmail.com]</span>
 <a name="l00005"></a>00005 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00021"></a>00021 
@@ -103,68 +103,62 @@
 <a name="l00103"></a>00103  <a class="code" href="namespaceDomain.html#10842e6efc35553af31ab1d44bf0e0b1">xmax_f</a> = 2*<a class="code" href="namespaceDomain.html#5015183306eba5fd2945b109575bbb51">xmax</a> - 1
 <a name="l00104"></a>00104  <a class="code" href="namespaceDomain.html#3170edda9f319cd071a1ac28164b79b8">ymax_f</a> = 2*<a class="code" href="namespaceDomain.html#780ef0d846df4cf1993fe20e6124e09a">ymax</a> - 1
 <a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="comment">! Find offset for order parameter mesh</span>
-<a name="l00107"></a>00107  <a class="code" href="namespaceDomain.html#9cb555c716a8125f2401a60b166487d9">xOffset</a> = 0
-<a name="l00108"></a>00108  <a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">yOffset</a> = 0
-<a name="l00109"></a>00109  <span class="keyword">IF</span> ( mpi_coords(1) &gt; 0 ) <a class="code" href="namespaceDomain.html#9cb555c716a8125f2401a60b166487d9">xOffset</a> = 1
-<a name="l00110"></a>00110  <span class="keyword">IF</span> ( mpi_coords(2) &gt; 0 ) <a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">yOffset</a> = 1
+<a name="l00106"></a>00106 <span class="comment">! Limits of order parameter mesh in this processor</span>
+<a name="l00107"></a>00107  <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a> = 2*<a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a> - 2
+<a name="l00108"></a>00108  <a class="code" href="namespaceDomain.html#7073048c871647903783e43c67b4ef0e">xu_f</a> = 2*<a class="code" href="namespaceDomain.html#9fbeb5b27996815645a9c112643654ae">xu</a> - 1
+<a name="l00109"></a>00109  <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a> = 2*<a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a> - 2
+<a name="l00110"></a>00110  <a class="code" href="namespaceDomain.html#9061fe340690ac194a1ca56a91627a10">yu_f</a> = 2*<a class="code" href="namespaceDomain.html#bee94a789dc019bc7fb60941d0f59b8e">yu</a> - 1
 <a name="l00111"></a>00111 
-<a name="l00112"></a>00112 <span class="comment">! Limits of order parameter mesh in this processor</span>
-<a name="l00113"></a>00113  <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a> = 2*<a class="code" href="namespaceDomain.html#d49c255aa3f027e8d6daac49d75408a1">xl</a> - 1 - <a class="code" href="namespaceDomain.html#9cb555c716a8125f2401a60b166487d9">xOffset</a>
-<a name="l00114"></a>00114  <a class="code" href="namespaceDomain.html#7073048c871647903783e43c67b4ef0e">xu_f</a> = 2*<a class="code" href="namespaceDomain.html#9fbeb5b27996815645a9c112643654ae">xu</a> - 1
-<a name="l00115"></a>00115  <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a> = 2*<a class="code" href="namespaceDomain.html#cfadad07384696856b0431824731844d">yl</a> - 1 - <a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">yOffset</a>
-<a name="l00116"></a>00116  <a class="code" href="namespaceDomain.html#9061fe340690ac194a1ca56a91627a10">yu_f</a> = 2*<a class="code" href="namespaceDomain.html#bee94a789dc019bc7fb60941d0f59b8e">yu</a> - 1
+<a name="l00112"></a>00112 <span class="comment">! Assign ghost layers to order parameter mesh</span>
+<a name="l00113"></a>00113  <a class="code" href="namespaceDomain.html#479181bae2282df744c81dd4bd79507d">xlg_f</a> = <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a> - 1
+<a name="l00114"></a>00114  <a class="code" href="namespaceDomain.html#082aba048dbd1c58b0a0fae670dec3a0">xug_f</a> = <a class="code" href="namespaceDomain.html#7073048c871647903783e43c67b4ef0e">xu_f</a> + 1
+<a name="l00115"></a>00115  <a class="code" href="namespaceDomain.html#f64110b9add1b4ab6ec9b7cb3ebaea59">ylg_f</a> = <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a> - 1
+<a name="l00116"></a>00116  <a class="code" href="namespaceDomain.html#c86b2841cc04b15bc974a48ac12bbabc">yug_f</a> = <a class="code" href="namespaceDomain.html#9061fe340690ac194a1ca56a91627a10">yu_f</a> + 1
 <a name="l00117"></a>00117 
-<a name="l00118"></a>00118 <span class="comment">! Assign ghost layers to order parameter mesh</span>
-<a name="l00119"></a>00119  <a class="code" href="namespaceDomain.html#479181bae2282df744c81dd4bd79507d">xlg_f</a> = <a class="code" href="namespaceDomain.html#e4a82e32fb7996e839cd3122e7ad937b">xl_f</a> - 1
-<a name="l00120"></a>00120  <a class="code" href="namespaceDomain.html#082aba048dbd1c58b0a0fae670dec3a0">xug_f</a> = <a class="code" href="namespaceDomain.html#7073048c871647903783e43c67b4ef0e">xu_f</a> + 1
-<a name="l00121"></a>00121  <a class="code" href="namespaceDomain.html#f64110b9add1b4ab6ec9b7cb3ebaea59">ylg_f</a> = <a class="code" href="namespaceDomain.html#2b6b7329b7324e4d654835281020da78">yl_f</a> - 1
-<a name="l00122"></a>00122  <a class="code" href="namespaceDomain.html#c86b2841cc04b15bc974a48ac12bbabc">yug_f</a> = <a class="code" href="namespaceDomain.html#9061fe340690ac194a1ca56a91627a10">yu_f</a> + 1
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124 <span class="comment">!-------- Determine neighbours of this processor -------------------------------</span>
-<a name="l00125"></a>00125 <span class="comment">! MPI_CART counts dimensions using 0-based arithmetic so that</span>
-<a name="l00126"></a>00126 <span class="comment">! direction = 0 -&gt; x  |  direction = 1 -&gt; y</span>
-<a name="l00127"></a>00127 <span class="comment">! Ranks of neighbours of this processor in the x and y directions</span>
-<a name="l00128"></a>00128  shift     = 1
-<a name="l00129"></a>00129  direction = 0
-<a name="l00130"></a>00130  CALL MPI_CART_SHIFT(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, direction, shift, <a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">west</a>, <a class="code" href="namespaceMPIParams.html#d61ad9765494a7c16d2f2d019b230886">east</a>, MPI_ERR)
-<a name="l00131"></a>00131  direction = 1
-<a name="l00132"></a>00132  CALL MPI_CART_SHIFT(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, direction, shift, <a class="code" href="namespaceMPIParams.html#40b0938ff89edf6ac7595b8404cf3ccc">south</a>, <a class="code" href="namespaceMPIParams.html#356e31d070e5ed87614ebc4630a91524">north</a>, MPI_ERR)
-<a name="l00133"></a>00133 
-<a name="l00134"></a>00134 <span class="comment">! Coordinates of neighbours of this processor in the x and y directions</span>
-<a name="l00135"></a>00135  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#d61ad9765494a7c16d2f2d019b230886">east</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
-<a name="l00136"></a>00136  xeast = mpi_coords(1)
+<a name="l00118"></a>00118 <span class="comment">!-------- Determine neighbours of this processor -------------------------------</span>
+<a name="l00119"></a>00119 <span class="comment">! MPI_CART counts dimensions using 0-based arithmetic so that</span>
+<a name="l00120"></a>00120 <span class="comment">! direction = 0 -&gt; x  |  direction = 1 -&gt; y</span>
+<a name="l00121"></a>00121 <span class="comment">! Ranks of neighbours of this processor in the x and y directions</span>
+<a name="l00122"></a>00122  shift     = 1
+<a name="l00123"></a>00123  direction = 0
+<a name="l00124"></a>00124  CALL MPI_CART_SHIFT(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, direction, shift, <a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">west</a>, <a class="code" href="namespaceMPIParams.html#d61ad9765494a7c16d2f2d019b230886">east</a>, MPI_ERR)
+<a name="l00125"></a>00125  direction = 1
+<a name="l00126"></a>00126  CALL MPI_CART_SHIFT(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, direction, shift, <a class="code" href="namespaceMPIParams.html#40b0938ff89edf6ac7595b8404cf3ccc">south</a>, <a class="code" href="namespaceMPIParams.html#356e31d070e5ed87614ebc4630a91524">north</a>, MPI_ERR)
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128 <span class="comment">! Coordinates of neighbours of this processor in the x and y directions</span>
+<a name="l00129"></a>00129  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#d61ad9765494a7c16d2f2d019b230886">east</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
+<a name="l00130"></a>00130  xeast = mpi_coords(1)
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">west</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
+<a name="l00133"></a>00133  xwest = mpi_coords(1)
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#356e31d070e5ed87614ebc4630a91524">north</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
+<a name="l00136"></a>00136  ynorth = mpi_coords(2)
 <a name="l00137"></a>00137 
-<a name="l00138"></a>00138  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">west</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
-<a name="l00139"></a>00139  xwest = mpi_coords(1)
+<a name="l00138"></a>00138  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#40b0938ff89edf6ac7595b8404cf3ccc">south</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
+<a name="l00139"></a>00139  ysouth = mpi_coords(2)
 <a name="l00140"></a>00140 
-<a name="l00141"></a>00141  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#356e31d070e5ed87614ebc4630a91524">north</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
-<a name="l00142"></a>00142  ynorth = mpi_coords(2)
-<a name="l00143"></a>00143 
-<a name="l00144"></a>00144  CALL MPI_CART_COORDS(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>, <a class="code" href="namespaceMPIParams.html#40b0938ff89edf6ac7595b8404cf3ccc">south</a>, <a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">mpi_dim</a>, mpi_coords, MPI_ERR)
-<a name="l00145"></a>00145  ysouth = mpi_coords(2)
-<a name="l00146"></a>00146 
-<a name="l00147"></a>00147 <span class="comment">! Ranks of the diagonal neighbours of this processor</span>
-<a name="l00148"></a>00148  mpi_coords(1) = xeast
-<a name="l00149"></a>00149  mpi_coords(2) = ynorth
-<a name="l00150"></a>00150  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#ec1a8d5811f8eca2db3a17ea7ce6a646">ne</a>,MPI_ERR)
-<a name="l00151"></a>00151 
-<a name="l00152"></a>00152  mpi_coords(1) = xwest
-<a name="l00153"></a>00153  mpi_coords(2) = ysouth
-<a name="l00154"></a>00154  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#d942f84661c92ab2e898141361c4b1a0">sw</a>,MPI_ERR)
-<a name="l00155"></a>00155 
-<a name="l00156"></a>00156  mpi_coords(1) = xwest
-<a name="l00157"></a>00157  mpi_coords(2) = ynorth
-<a name="l00158"></a>00158  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#e307b73ae5d796d0827430d8cf91f757">nw</a>,MPI_ERR)
-<a name="l00159"></a>00159 
-<a name="l00160"></a>00160  mpi_coords(1) = xeast
-<a name="l00161"></a>00161  mpi_coords(2) = ysouth
-<a name="l00162"></a>00162  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#e6f89d63a81441ffd644bdb281b8b74f">se</a>,MPI_ERR)
-<a name="l00163"></a>00163 
-<a name="l00164"></a>00164  RETURN
-<a name="l00165"></a>00165  <span class="keyword">END</span> <span class="keyword">SUBROUTINE </span><a class="code" href="vgrid_8f.html#0b47add79ea09b9ebdc21b5a12a0ce76">VGrid</a>
+<a name="l00141"></a>00141 <span class="comment">! Ranks of the diagonal neighbours of this processor</span>
+<a name="l00142"></a>00142  mpi_coords(1) = xeast
+<a name="l00143"></a>00143  mpi_coords(2) = ynorth
+<a name="l00144"></a>00144  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#ec1a8d5811f8eca2db3a17ea7ce6a646">ne</a>,MPI_ERR)
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146  mpi_coords(1) = xwest
+<a name="l00147"></a>00147  mpi_coords(2) = ysouth
+<a name="l00148"></a>00148  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#d942f84661c92ab2e898141361c4b1a0">sw</a>,MPI_ERR)
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150  mpi_coords(1) = xwest
+<a name="l00151"></a>00151  mpi_coords(2) = ynorth
+<a name="l00152"></a>00152  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#e307b73ae5d796d0827430d8cf91f757">nw</a>,MPI_ERR)
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154  mpi_coords(1) = xeast
+<a name="l00155"></a>00155  mpi_coords(2) = ysouth
+<a name="l00156"></a>00156  CALL MPI_CART_RANK(<a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">MPI_COMM_VGRID</a>,mpi_coords,<a class="code" href="namespaceMPIParams.html#e6f89d63a81441ffd644bdb281b8b74f">se</a>,MPI_ERR)
+<a name="l00157"></a>00157 
+<a name="l00158"></a>00158  RETURN
+<a name="l00159"></a>00159  <span class="keyword">END</span> <span class="keyword">SUBROUTINE </span><a class="code" href="vgrid_8f.html#0b47add79ea09b9ebdc21b5a12a0ce76">VGrid</a>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Jun 15 17:06:41 2008 for ZSC-2D-DGR-MPI by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Nov 10 16:42:56 2008 for ZSC-2D-DGR-MPI by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,6 +1,6 @@
 !-------------------------------------------------------------------------------
 ! Subroutine : VGrid
-! Revision   : 1.0 (2008-06-15)
+! Revision   : 1.1 (2008-11-10)
 ! Author     : Carlos Rosales Fernandez [carlos.rosales.fernandez(at)gmail.com]
 !-------------------------------------------------------------------------------
 !> @file
@@ -106,14 +106,9 @@
  xmax_f = 2*xmax - 1
  ymax_f = 2*ymax - 1
 
- xOffset = 0
- yOffset = 0
- IF ( mpi_coords(1) > 0 ) xOffset = 1
- IF ( mpi_coords(2) > 0 ) yOffset = 1
-
- xl_f = 2*xl - 1 - xOffset
+ xl_f = 2*xl - 2
  xu_f = 2*xu - 1
- yl_f = 2*yl - 1 - yOffset
+ yl_f = 2*yl - 2
  yu_f = 2*yu - 1
 
 ! Ghost layer limits (order parameter grid)

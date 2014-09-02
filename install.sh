@@ -38,7 +38,7 @@
 # family of compilers you should also change --version by -qversion in line 68
 # of this script.
 #
-# v1.0                                   (2008-07-08)  Carlos Rosales Fernandez
+# v1.1                                   (2008-11-10)  Carlos Rosales Fernandez
 
 # Set the compilation flags depending on the input options
 # GNU gfortran
@@ -59,7 +59,7 @@ touch $ERR
 # Record the local conditions for the compilation
 MSG="======================================================================\n"
 printf "$MSG" && printf "$MSG" > $LOG
-MSG="Package  : MP-LABS\nVersion  : 1.0\n"
+MSG="Package  : MP-LABS\nVersion  : 1.1\n"
 printf "$MSG" && printf "$MSG" >> $LOG
 MSG="Date     : $(date +%d.%m.%Y)\n"
 printf "$MSG" && printf "$MSG" >> $LOG
@@ -178,7 +178,7 @@ then
   MSG="***          Installation may be incomplete.            ***\n\n"
   printf "$MSG" && printf "$MSG" 1>> $LOG
 else
-  MSG="\nMP-LABS v.10 installation completed successfully!\n\n"
+  MSG="\nMP-LABS v1.1 installation completed successfully!\n\n"
   printf "$MSG" && printf "$MSG" 1>> $LOG
   printf "For details see mplabs_install.log.\n\n"
 fi

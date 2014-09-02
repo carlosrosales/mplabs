@@ -1,6 +1,6 @@
 !-------------------------------------------------------------------------------
 ! File     : Common
-! Revision : 1.0 (2008-06-15)
+! Revision : 1.1 (2008-11-10)
 ! Author   : David S. Whyte [david(at)ihpc.a-star.edu.sg]
 !-------------------------------------------------------------------------------
 !> @file
@@ -45,7 +45,6 @@
  INTEGER :: xmin, xmax, ymin, ymax, xmin_f, xmax_f, ymin_f, ymax_f
  INTEGER :: xl, xu, yl, yu, xl_f, xu_f, yl_f, yu_f
  INTEGER :: xlg, xug, ylg, yug, xlg_f, xug_f, ylg_f, yug_f
- INTEGER :: xOffset, yOffset
  INTEGER :: xsize, xsize6, xsize_f
  INTEGER :: ysize, ysize6, ysize_f
  INTEGER :: now, nxt, NX, NY, NX_f, NY_f

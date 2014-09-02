@@ -15,7 +15,7 @@
   </div>
 <h1>src/parallel/zsc-dgr-src/common.f</h1><a href="common_8f.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00002"></a>00002 <span class="comment">! File     : Common</span>
-<a name="l00003"></a>00003 <span class="comment">! Revision : 1.0 (2008-06-15)</span>
+<a name="l00003"></a>00003 <span class="comment">! Revision : 1.1 (2008-11-10)</span>
 <a name="l00004"></a>00004 <span class="comment">! Author   : David S. Whyte [david(at)ihpc.a-star.edu.sg]</span>
 <a name="l00005"></a>00005 <span class="comment">!-------------------------------------------------------------------------------</span>
 <a name="l00008"></a>00008 
@@ -56,130 +56,129 @@
 <a name="l00045"></a><a class="code" href="namespaceDomain.html#d8382735a117972fee8cff05cac089f8">00045</a>  <span class="keywordtype">INTEGER</span> :: xmin, xmax, ymin, ymax, xmin_f, xmax_f, ymin_f, ymax_f
 <a name="l00046"></a><a class="code" href="namespaceDomain.html#9061fe340690ac194a1ca56a91627a10">00046</a>  <span class="keywordtype">INTEGER</span> :: xl, xu, yl, yu, xl_f, xu_f, yl_f, yu_f
 <a name="l00047"></a><a class="code" href="namespaceDomain.html#c86b2841cc04b15bc974a48ac12bbabc">00047</a>  <span class="keywordtype">INTEGER</span> :: xlg, xug, ylg, yug, xlg_f, xug_f, ylg_f, yug_f
-<a name="l00048"></a><a class="code" href="namespaceDomain.html#969a41faa7f4007172fbc7093a639b0c">00048</a>  <span class="keywordtype">INTEGER</span> :: xOffset, yOffset
-<a name="l00049"></a><a class="code" href="namespaceDomain.html#fd262daf0d89037cf3e236aa3b984edc">00049</a>  <span class="keywordtype">INTEGER</span> :: xsize, xsize6, xsize_f
-<a name="l00050"></a><a class="code" href="namespaceDomain.html#2283ec47845ec924bb7118641b269716">00050</a>  <span class="keywordtype">INTEGER</span> :: ysize, ysize6, ysize_f
-<a name="l00051"></a><a class="code" href="namespaceDomain.html#013f9fdb5947ddd76f5eac2d33f54f14">00051</a>  <span class="keywordtype">INTEGER</span> :: now, nxt, NX, NY, NX_f, NY_f
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="comment">! ndim = spatial dimension</span>
-<a name="l00054"></a><a class="code" href="namespaceDomain.html#b5887fbffe02eb74d70783eaa08d6dae">00054</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: ndim = 2
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="comment">! Neighbour arrays</span>
-<a name="l00057"></a><a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">00057</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:) </span>:: ni, ni_f
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="comment">! Effective volume and radius</span>
-<a name="l00060"></a><a class="code" href="namespaceDomain.html#1431bf07d8fd813ebf03553ffd5c5817">00060</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: invInitVol
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="comment">! Define constants used in the code (inv6 = 1/6, inv12 = 1/12, invPi = 1/pi)</span>
-<a name="l00063"></a><a class="code" href="namespaceDomain.html#7747d1a421947d31d83d427cf8c6a9ba">00063</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: inv6  = 0.16666666666666666667D0
-<a name="l00064"></a><a class="code" href="namespaceDomain.html#8006a7b093b5a7f6f36ca27c67c0d987">00064</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: inv12 = 0.08333333333333333333D0
-<a name="l00065"></a><a class="code" href="namespaceDomain.html#bd057cc8be61106cedc64feaea9f946e">00065</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: invPi = 0.31830988618379067154D0
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067 <span class="keyword"> END MODULE Domain</span>
-<a name="l00068"></a>00068 
-<a name="l00070"></a><a class="code" href="namespaceFluidParams.html">00070</a>  <span class="keyword">MODULE</span> FluidParams
-<a name="l00071"></a>00071  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
-<a name="l00072"></a>00072  IMPLICIT NONE
-<a name="l00073"></a>00073  <span class="keywordtype">SAVE</span>
-<a name="l00074"></a>00074 
-<a name="l00075"></a><a class="code" href="namespaceFluidParams.html#32c53acb71388649b8ca9ff6c777e1c4">00075</a>  <span class="keywordtype">INTEGER</span> :: nBubbles
-<a name="l00076"></a><a class="code" href="namespaceFluidParams.html#5aee5c9682d294fd498b11f420c7551f">00076</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: bubbles
-<a name="l00077"></a><a class="code" href="namespaceFluidParams.html#fd30f5fb50167fd1c325f2e5435d06f8">00077</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:11) </span>:: Convergence
-<a name="l00078"></a><a class="code" href="namespaceFluidParams.html#f2c04d4a62c1d682722ce4374ac921de">00078</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: D, sigma, IntWidth
-<a name="l00079"></a><a class="code" href="namespaceFluidParams.html#47c1c34b5241e07d51bc1f9ff530ce4e">00079</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: alpha, alpha4, kappa, kappaG
-<a name="l00080"></a><a class="code" href="namespaceFluidParams.html#f5fe260d441f98197c1943d2e91b1c49">00080</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: rhoL, rhoH, tauRho, invTauRho, invTauRho2
-<a name="l00081"></a><a class="code" href="namespaceFluidParams.html#2449a3c5690718c094ba70ab8437dfef">00081</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: tauPhi, invTauPhi
-<a name="l00082"></a><a class="code" href="namespaceFluidParams.html#53a2ec2bc462117a8b0563d9f3d152a4">00082</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phiStar, phiStar2, phiStar4
-<a name="l00083"></a><a class="code" href="namespaceFluidParams.html#fa1752e92657d5c76b5ecde560929c8e">00083</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: Gamma, eps, pConv
-<a name="l00084"></a><a class="code" href="namespaceFluidParams.html#58ada03ca09df4bda21f803b82dad439">00084</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: eta, eta2, invEta2
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086 <span class="comment">! Velocity and pressure arrays</span>
-<a name="l00087"></a><a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">00087</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:)   </span>:: p, p_f
-<a name="l00088"></a><a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">00088</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:) </span>:: u, u_f
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090 <span class="comment">! Order parameter and differential arrays</span>
-<a name="l00091"></a><a class="code" href="namespaceFluidParams.html#83c45c198dd2766763be443b350ef79f">00091</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: phi_f, lapPhi_f
-<a name="l00092"></a><a class="code" href="namespaceFluidParams.html#69be8b03219d63b0348ad953f300ca30">00092</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: gradPhiX_f, gradPhiY_f
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094 <span class="keyword"> END MODULE FluidParams</span>
-<a name="l00095"></a>00095 
-<a name="l00097"></a><a class="code" href="namespaceLBMParams.html">00097</a>  <span class="keyword">MODULE</span> LBMParams
-<a name="l00098"></a>00098  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
-<a name="l00099"></a>00099  IMPLICIT NONE
-<a name="l00100"></a>00100  <span class="keywordtype">SAVE</span>
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="comment">! fdim = order parameter distribution dimension - 1 (D2Q5)</span>
-<a name="l00103"></a>00103 <span class="comment">! gdim = momentum distribution dimension - 1 (D2Q9)</span>
-<a name="l00104"></a><a class="code" href="namespaceLBMParams.html#f5fb176d2d9b30a67e5594c801306bbf">00104</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: fdim = 4
-<a name="l00105"></a><a class="code" href="namespaceLBMParams.html#973a51ed01e9e41a2c8c935db2320b16">00105</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: gdim = 8
-<a name="l00106"></a>00106 
-<a name="l00107"></a>00107 <span class="comment">! Distribution functions</span>
-<a name="l00108"></a><a class="code" href="namespaceLBMParams.html#5bd5d55d427d95d7b869cd36aff0bbfe">00108</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:)   </span>:: f, fcol
-<a name="l00109"></a><a class="code" href="namespaceLBMParams.html#fb25b4ac863ca3361615143d4f8d3c3e">00109</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:,:) </span>:: g
-<a name="l00110"></a>00110 
-<a name="l00111"></a>00111 <span class="comment">! D2Q5/D2Q9 Lattice speed of sound (Cs = 1/DSQRT(3), Cs_sq = 1/3, invCs_sq = 3)</span>
-<a name="l00112"></a><a class="code" href="namespaceLBMParams.html#3b6ea5110f4b93a0ebc0696a50690d4b">00112</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Cs       = 0.57735026918962576451D0
-<a name="l00113"></a><a class="code" href="namespaceLBMParams.html#0bfca59cbf3ec482d3c22353d34d4bda">00113</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Cs_sq    = 0.33333333333333333333D0
-<a name="l00114"></a><a class="code" href="namespaceLBMParams.html#2ee2fe186a18a48e6bd38fc7053aec70">00114</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: invCs_sq = 3.00000000000000000000D0
-<a name="l00115"></a>00115 
-<a name="l00116"></a>00116 <span class="comment">! Distributions weights (D2Q9: Eg0 = 4/9, Eg1 = 1/9, Eg2 = 1/36)</span>
-<a name="l00117"></a><a class="code" href="namespaceLBMParams.html#4250e7138cc7bf12480d2e8842a48e96">00117</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg0 = 0.44444444444444444444D0
-<a name="l00118"></a><a class="code" href="namespaceLBMParams.html#25bb0ad0b7ce779665869d562aaa60a1">00118</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg1 = 0.11111111111111111111D0
-<a name="l00119"></a><a class="code" href="namespaceLBMParams.html#c846daf8936232c6fdd9814818c5e491">00119</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg2 = 0.02777777777777777778D0
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121 <span class="comment">! Modified distribution weight (to avoid operations: EgiC = Egi*invCs_sq)</span>
-<a name="l00122"></a><a class="code" href="namespaceLBMParams.html#0be0d768d00143526a53a581922203ba">00122</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg0C = 1.33333333333333333333D0
-<a name="l00123"></a><a class="code" href="namespaceLBMParams.html#26ce265b88e6f7420460c91da825c1b8">00123</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg1C = 0.33333333333333333333D0
-<a name="l00124"></a><a class="code" href="namespaceLBMParams.html#d63baa3192ca05a23b1ec89c8818aebf">00124</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg2C = 0.08333333333333333333D0
-<a name="l00125"></a><a class="code" href="namespaceLBMParams.html#5fd0911f6dba0e009f0a30cd2e766486">00125</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: Eg0T, Eg1T, Eg2T
-<a name="l00126"></a>00126 
-<a name="l00127"></a>00127 <span class="keyword"> END MODULE LBMParams</span>
-<a name="l00128"></a>00128 
-<a name="l00135"></a><a class="code" href="namespaceMPIParams.html">00135</a>  <span class="keyword">MODULE</span> MPIParams
-<a name="l00136"></a>00136  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
-<a name="l00137"></a>00137  IMPLICIT NONE
-<a name="l00138"></a>00138  <span class="keywordtype">SAVE</span>
-<a name="l00139"></a>00139 
-<a name="l00140"></a>00140 <span class="comment">! Communication parameters</span>
-<a name="l00141"></a><a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">00141</a>  <span class="keywordtype">INTEGER</span> :: MPI_COMM_VGRID
-<a name="l00142"></a><a class="code" href="namespaceMPIParams.html#0b7ef5eead290a06e88679b3ae870ca5">00142</a>  <span class="keywordtype">INTEGER</span> :: nprocs, proc, vproc
-<a name="l00143"></a><a class="code" href="namespaceMPIParams.html#70a9d145f8023f623c5e199a08c0370d">00143</a>  <span class="keywordtype">INTEGER</span> :: mpi_xdim, mpi_ydim
-<a name="l00144"></a><a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">00144</a>  <span class="keywordtype">INTEGER</span> :: east, west, north, south, ne, nw, se, sw
-<a name="l00145"></a><a class="code" href="namespaceMPIParams.html#48ef9fe802ed06dc78d8f84441a35e6c">00145</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: master  = 0
-<a name="l00146"></a><a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">00146</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: mpi_dim = 2
-<a name="l00147"></a>00147 
-<a name="l00148"></a>00148 <span class="comment">! Constants used as tags</span>
-<a name="l00149"></a><a class="code" href="namespaceMPIParams.html#9e0832bbd642a37e8c19ef47b01ebba0">00149</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: TAG1 = 1, TAG2 = 2, TAG3 = 3, TAG4 = 4
-<a name="l00150"></a>00150 
-<a name="l00151"></a>00151 <span class="comment">! Information exchange buffers (x direction)</span>
-<a name="l00152"></a><a class="code" href="namespaceMPIParams.html#21b23f2faa96f58deed9e2f9a361a674">00152</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_west_snd, f_west_rcv
-<a name="l00153"></a><a class="code" href="namespaceMPIParams.html#136b09acd743d0c8da2634e22dee9646">00153</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_east_snd, f_east_rcv
-<a name="l00154"></a><a class="code" href="namespaceMPIParams.html#28d43cf304922d47efa53058a399c2f7">00154</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_west_snd, phi_west_rcv
-<a name="l00155"></a><a class="code" href="namespaceMPIParams.html#f3c82598db8355cab867337bb75b60b5">00155</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_east_snd, phi_east_rcv
-<a name="l00156"></a><a class="code" href="namespaceMPIParams.html#89eba16ba035029ed7b2655ce9011d8e">00156</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_west_snd, hydro_west_rcv
-<a name="l00157"></a><a class="code" href="namespaceMPIParams.html#ffaa6c988eac9303fb594fd47fea810f">00157</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_east_snd, hydro_east_rcv
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159 <span class="comment">! Information exchange buffers (y direction)</span>
-<a name="l00160"></a><a class="code" href="namespaceMPIParams.html#410e1423aabf3493912135a9c9a3942f">00160</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_south_snd, f_south_rcv
-<a name="l00161"></a><a class="code" href="namespaceMPIParams.html#49ac2df079f53661c06a0b5cc4e96c74">00161</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_north_snd, f_north_rcv
-<a name="l00162"></a><a class="code" href="namespaceMPIParams.html#a24fb4c65fce58de7f72429d004f8203">00162</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_north_snd, phi_north_rcv
-<a name="l00163"></a><a class="code" href="namespaceMPIParams.html#91781ae47c44e9ec5511a59bfac95061">00163</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_south_snd, phi_south_rcv
-<a name="l00164"></a><a class="code" href="namespaceMPIParams.html#8346474a8d12e7420f49ec7a1085cf3a">00164</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_south_snd, hydro_south_rcv
-<a name="l00165"></a><a class="code" href="namespaceMPIParams.html#04c9c8c3c8dc9a047c18b7c6ca40ef40">00165</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_north_snd, hydro_north_rcv
-<a name="l00166"></a>00166 
-<a name="l00167"></a>00167 <span class="comment">! Information exchange buffers (diagonals)</span>
-<a name="l00168"></a><a class="code" href="namespaceMPIParams.html#3b2753a003b914a578ccba413ce493c0">00168</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_ne_snd, phi_ne_rcv
-<a name="l00169"></a><a class="code" href="namespaceMPIParams.html#7a405f5210f81326c1c9e1b58d799d1b">00169</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_se_snd, phi_se_rcv
-<a name="l00170"></a><a class="code" href="namespaceMPIParams.html#cb7e35fddbfba63bf9285d91080adb39">00170</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_nw_snd, phi_nw_rcv
-<a name="l00171"></a><a class="code" href="namespaceMPIParams.html#5d392f173cf5cdb60cd4404dcda4a35f">00171</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_sw_snd, phi_sw_rcv
-<a name="l00172"></a><a class="code" href="namespaceMPIParams.html#03a654a59b013b522892854f0c3e2ba5">00172</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_ne_snd, hydro_ne_rcv
-<a name="l00173"></a><a class="code" href="namespaceMPIParams.html#7b743276c5068362b4679c08e5fe0d6a">00173</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_se_snd, hydro_se_rcv
-<a name="l00174"></a><a class="code" href="namespaceMPIParams.html#2d8d7b5db656e61f0495fb5cfe32e54c">00174</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_nw_snd, hydro_nw_rcv
-<a name="l00175"></a><a class="code" href="namespaceMPIParams.html#4ac83ebbc3a2b824539f46d1a091e2fe">00175</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_sw_snd, hydro_sw_rcv
-<a name="l00176"></a>00176 
-<a name="l00177"></a>00177 <span class="keyword"> END MODULE MPIParams</span>
+<a name="l00048"></a><a class="code" href="namespaceDomain.html#fd262daf0d89037cf3e236aa3b984edc">00048</a>  <span class="keywordtype">INTEGER</span> :: xsize, xsize6, xsize_f
+<a name="l00049"></a><a class="code" href="namespaceDomain.html#2283ec47845ec924bb7118641b269716">00049</a>  <span class="keywordtype">INTEGER</span> :: ysize, ysize6, ysize_f
+<a name="l00050"></a><a class="code" href="namespaceDomain.html#013f9fdb5947ddd76f5eac2d33f54f14">00050</a>  <span class="keywordtype">INTEGER</span> :: now, nxt, NX, NY, NX_f, NY_f
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="comment">! ndim = spatial dimension</span>
+<a name="l00053"></a><a class="code" href="namespaceDomain.html#b5887fbffe02eb74d70783eaa08d6dae">00053</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: ndim = 2
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="comment">! Neighbour arrays</span>
+<a name="l00056"></a><a class="code" href="namespaceDomain.html#0832969449823b3dd84c711540857a66">00056</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:) </span>:: ni, ni_f
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058 <span class="comment">! Effective volume and radius</span>
+<a name="l00059"></a><a class="code" href="namespaceDomain.html#1431bf07d8fd813ebf03553ffd5c5817">00059</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: invInitVol
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 <span class="comment">! Define constants used in the code (inv6 = 1/6, inv12 = 1/12, invPi = 1/pi)</span>
+<a name="l00062"></a><a class="code" href="namespaceDomain.html#7747d1a421947d31d83d427cf8c6a9ba">00062</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: inv6  = 0.16666666666666666667D0
+<a name="l00063"></a><a class="code" href="namespaceDomain.html#8006a7b093b5a7f6f36ca27c67c0d987">00063</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: inv12 = 0.08333333333333333333D0
+<a name="l00064"></a><a class="code" href="namespaceDomain.html#bd057cc8be61106cedc64feaea9f946e">00064</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: invPi = 0.31830988618379067154D0
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066 <span class="keyword"> END MODULE Domain</span>
+<a name="l00067"></a>00067 
+<a name="l00069"></a><a class="code" href="namespaceFluidParams.html">00069</a>  <span class="keyword">MODULE</span> FluidParams
+<a name="l00070"></a>00070  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
+<a name="l00071"></a>00071  IMPLICIT NONE
+<a name="l00072"></a>00072  <span class="keywordtype">SAVE</span>
+<a name="l00073"></a>00073 
+<a name="l00074"></a><a class="code" href="namespaceFluidParams.html#32c53acb71388649b8ca9ff6c777e1c4">00074</a>  <span class="keywordtype">INTEGER</span> :: nBubbles
+<a name="l00075"></a><a class="code" href="namespaceFluidParams.html#5aee5c9682d294fd498b11f420c7551f">00075</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: bubbles
+<a name="l00076"></a><a class="code" href="namespaceFluidParams.html#fd30f5fb50167fd1c325f2e5435d06f8">00076</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:11) </span>:: Convergence
+<a name="l00077"></a><a class="code" href="namespaceFluidParams.html#f2c04d4a62c1d682722ce4374ac921de">00077</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: D, sigma, IntWidth
+<a name="l00078"></a><a class="code" href="namespaceFluidParams.html#47c1c34b5241e07d51bc1f9ff530ce4e">00078</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: alpha, alpha4, kappa, kappaG
+<a name="l00079"></a><a class="code" href="namespaceFluidParams.html#f5fe260d441f98197c1943d2e91b1c49">00079</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: rhoL, rhoH, tauRho, invTauRho, invTauRho2
+<a name="l00080"></a><a class="code" href="namespaceFluidParams.html#2449a3c5690718c094ba70ab8437dfef">00080</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: tauPhi, invTauPhi
+<a name="l00081"></a><a class="code" href="namespaceFluidParams.html#53a2ec2bc462117a8b0563d9f3d152a4">00081</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phiStar, phiStar2, phiStar4
+<a name="l00082"></a><a class="code" href="namespaceFluidParams.html#fa1752e92657d5c76b5ecde560929c8e">00082</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: Gamma, eps, pConv
+<a name="l00083"></a><a class="code" href="namespaceFluidParams.html#58ada03ca09df4bda21f803b82dad439">00083</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: eta, eta2, invEta2
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 <span class="comment">! Velocity and pressure arrays</span>
+<a name="l00086"></a><a class="code" href="namespaceFluidParams.html#2bf1b47752775637a4710c71e52c3908">00086</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:)   </span>:: p, p_f
+<a name="l00087"></a><a class="code" href="namespaceFluidParams.html#f87ee8e5e45a03a0cb4bca1dc72e2c66">00087</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:) </span>:: u, u_f
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="comment">! Order parameter and differential arrays</span>
+<a name="l00090"></a><a class="code" href="namespaceFluidParams.html#83c45c198dd2766763be443b350ef79f">00090</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: phi_f, lapPhi_f
+<a name="l00091"></a><a class="code" href="namespaceFluidParams.html#69be8b03219d63b0348ad953f300ca30">00091</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:) </span>:: gradPhiX_f, gradPhiY_f
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="keyword"> END MODULE FluidParams</span>
+<a name="l00094"></a>00094 
+<a name="l00096"></a><a class="code" href="namespaceLBMParams.html">00096</a>  <span class="keyword">MODULE</span> LBMParams
+<a name="l00097"></a>00097  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
+<a name="l00098"></a>00098  IMPLICIT NONE
+<a name="l00099"></a>00099  <span class="keywordtype">SAVE</span>
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101 <span class="comment">! fdim = order parameter distribution dimension - 1 (D2Q5)</span>
+<a name="l00102"></a>00102 <span class="comment">! gdim = momentum distribution dimension - 1 (D2Q9)</span>
+<a name="l00103"></a><a class="code" href="namespaceLBMParams.html#f5fb176d2d9b30a67e5594c801306bbf">00103</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: fdim = 4
+<a name="l00104"></a><a class="code" href="namespaceLBMParams.html#973a51ed01e9e41a2c8c935db2320b16">00104</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: gdim = 8
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="comment">! Distribution functions</span>
+<a name="l00107"></a><a class="code" href="namespaceLBMParams.html#5bd5d55d427d95d7b869cd36aff0bbfe">00107</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:)   </span>:: f, fcol
+<a name="l00108"></a><a class="code" href="namespaceLBMParams.html#fb25b4ac863ca3361615143d4f8d3c3e">00108</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:,:,:,:) </span>:: g
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 <span class="comment">! D2Q5/D2Q9 Lattice speed of sound (Cs = 1/DSQRT(3), Cs_sq = 1/3, invCs_sq = 3)</span>
+<a name="l00111"></a><a class="code" href="namespaceLBMParams.html#3b6ea5110f4b93a0ebc0696a50690d4b">00111</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Cs       = 0.57735026918962576451D0
+<a name="l00112"></a><a class="code" href="namespaceLBMParams.html#0bfca59cbf3ec482d3c22353d34d4bda">00112</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Cs_sq    = 0.33333333333333333333D0
+<a name="l00113"></a><a class="code" href="namespaceLBMParams.html#2ee2fe186a18a48e6bd38fc7053aec70">00113</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: invCs_sq = 3.00000000000000000000D0
+<a name="l00114"></a>00114 
+<a name="l00115"></a>00115 <span class="comment">! Distributions weights (D2Q9: Eg0 = 4/9, Eg1 = 1/9, Eg2 = 1/36)</span>
+<a name="l00116"></a><a class="code" href="namespaceLBMParams.html#4250e7138cc7bf12480d2e8842a48e96">00116</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg0 = 0.44444444444444444444D0
+<a name="l00117"></a><a class="code" href="namespaceLBMParams.html#25bb0ad0b7ce779665869d562aaa60a1">00117</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg1 = 0.11111111111111111111D0
+<a name="l00118"></a><a class="code" href="namespaceLBMParams.html#c846daf8936232c6fdd9814818c5e491">00118</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg2 = 0.02777777777777777778D0
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120 <span class="comment">! Modified distribution weight (to avoid operations: EgiC = Egi*invCs_sq)</span>
+<a name="l00121"></a><a class="code" href="namespaceLBMParams.html#0be0d768d00143526a53a581922203ba">00121</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg0C = 1.33333333333333333333D0
+<a name="l00122"></a><a class="code" href="namespaceLBMParams.html#26ce265b88e6f7420460c91da825c1b8">00122</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg1C = 0.33333333333333333333D0
+<a name="l00123"></a><a class="code" href="namespaceLBMParams.html#d63baa3192ca05a23b1ec89c8818aebf">00123</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">PARAMETER</span> :: Eg2C = 0.08333333333333333333D0
+<a name="l00124"></a><a class="code" href="namespaceLBMParams.html#5fd0911f6dba0e009f0a30cd2e766486">00124</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: Eg0T, Eg1T, Eg2T
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126 <span class="keyword"> END MODULE LBMParams</span>
+<a name="l00127"></a>00127 
+<a name="l00134"></a><a class="code" href="namespaceMPIParams.html">00134</a>  <span class="keyword">MODULE</span> MPIParams
+<a name="l00135"></a>00135  USE <span class="keywordflow">NTypes</span>, ONLY : DBL
+<a name="l00136"></a>00136  IMPLICIT NONE
+<a name="l00137"></a>00137  <span class="keywordtype">SAVE</span>
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139 <span class="comment">! Communication parameters</span>
+<a name="l00140"></a><a class="code" href="namespaceMPIParams.html#bd30b0cbcd1fb9b6b7622b5de7e9097c">00140</a>  <span class="keywordtype">INTEGER</span> :: MPI_COMM_VGRID
+<a name="l00141"></a><a class="code" href="namespaceMPIParams.html#0b7ef5eead290a06e88679b3ae870ca5">00141</a>  <span class="keywordtype">INTEGER</span> :: nprocs, proc, vproc
+<a name="l00142"></a><a class="code" href="namespaceMPIParams.html#70a9d145f8023f623c5e199a08c0370d">00142</a>  <span class="keywordtype">INTEGER</span> :: mpi_xdim, mpi_ydim
+<a name="l00143"></a><a class="code" href="namespaceMPIParams.html#40118944cafa8e584e35b3ba186feddd">00143</a>  <span class="keywordtype">INTEGER</span> :: east, west, north, south, ne, nw, se, sw
+<a name="l00144"></a><a class="code" href="namespaceMPIParams.html#48ef9fe802ed06dc78d8f84441a35e6c">00144</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: master  = 0
+<a name="l00145"></a><a class="code" href="namespaceMPIParams.html#bd20d0ddf9f4f33faf793b921a5594ff">00145</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: mpi_dim = 2
+<a name="l00146"></a>00146 
+<a name="l00147"></a>00147 <span class="comment">! Constants used as tags</span>
+<a name="l00148"></a><a class="code" href="namespaceMPIParams.html#9e0832bbd642a37e8c19ef47b01ebba0">00148</a>  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PARAMETER</span> :: TAG1 = 1, TAG2 = 2, TAG3 = 3, TAG4 = 4
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150 <span class="comment">! Information exchange buffers (x direction)</span>
+<a name="l00151"></a><a class="code" href="namespaceMPIParams.html#21b23f2faa96f58deed9e2f9a361a674">00151</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_west_snd, f_west_rcv
+<a name="l00152"></a><a class="code" href="namespaceMPIParams.html#136b09acd743d0c8da2634e22dee9646">00152</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_east_snd, f_east_rcv
+<a name="l00153"></a><a class="code" href="namespaceMPIParams.html#28d43cf304922d47efa53058a399c2f7">00153</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_west_snd, phi_west_rcv
+<a name="l00154"></a><a class="code" href="namespaceMPIParams.html#f3c82598db8355cab867337bb75b60b5">00154</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_east_snd, phi_east_rcv
+<a name="l00155"></a><a class="code" href="namespaceMPIParams.html#89eba16ba035029ed7b2655ce9011d8e">00155</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_west_snd, hydro_west_rcv
+<a name="l00156"></a><a class="code" href="namespaceMPIParams.html#ffaa6c988eac9303fb594fd47fea810f">00156</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_east_snd, hydro_east_rcv
+<a name="l00157"></a>00157 
+<a name="l00158"></a>00158 <span class="comment">! Information exchange buffers (y direction)</span>
+<a name="l00159"></a><a class="code" href="namespaceMPIParams.html#410e1423aabf3493912135a9c9a3942f">00159</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_south_snd, f_south_rcv
+<a name="l00160"></a><a class="code" href="namespaceMPIParams.html#49ac2df079f53661c06a0b5cc4e96c74">00160</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: f_north_snd, f_north_rcv
+<a name="l00161"></a><a class="code" href="namespaceMPIParams.html#a24fb4c65fce58de7f72429d004f8203">00161</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_north_snd, phi_north_rcv
+<a name="l00162"></a><a class="code" href="namespaceMPIParams.html#91781ae47c44e9ec5511a59bfac95061">00162</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: phi_south_snd, phi_south_rcv
+<a name="l00163"></a><a class="code" href="namespaceMPIParams.html#8346474a8d12e7420f49ec7a1085cf3a">00163</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_south_snd, hydro_south_rcv
+<a name="l00164"></a><a class="code" href="namespaceMPIParams.html#04c9c8c3c8dc9a047c18b7c6ca40ef40">00164</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">ALLOCATABLE</span>, <span class="keywordtype">DIMENSION(:) </span>:: hydro_north_snd, hydro_north_rcv
+<a name="l00165"></a>00165 
+<a name="l00166"></a>00166 <span class="comment">! Information exchange buffers (diagonals)</span>
+<a name="l00167"></a><a class="code" href="namespaceMPIParams.html#3b2753a003b914a578ccba413ce493c0">00167</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_ne_snd, phi_ne_rcv
+<a name="l00168"></a><a class="code" href="namespaceMPIParams.html#7a405f5210f81326c1c9e1b58d799d1b">00168</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_se_snd, phi_se_rcv
+<a name="l00169"></a><a class="code" href="namespaceMPIParams.html#cb7e35fddbfba63bf9285d91080adb39">00169</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_nw_snd, phi_nw_rcv
+<a name="l00170"></a><a class="code" href="namespaceMPIParams.html#5d392f173cf5cdb60cd4404dcda4a35f">00170</a>  <span class="keywordtype">REAL(KIND = DBL) </span>:: phi_sw_snd, phi_sw_rcv
+<a name="l00171"></a><a class="code" href="namespaceMPIParams.html#03a654a59b013b522892854f0c3e2ba5">00171</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_ne_snd, hydro_ne_rcv
+<a name="l00172"></a><a class="code" href="namespaceMPIParams.html#7b743276c5068362b4679c08e5fe0d6a">00172</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_se_snd, hydro_se_rcv
+<a name="l00173"></a><a class="code" href="namespaceMPIParams.html#2d8d7b5db656e61f0495fb5cfe32e54c">00173</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_nw_snd, hydro_nw_rcv
+<a name="l00174"></a><a class="code" href="namespaceMPIParams.html#4ac83ebbc3a2b824539f46d1a091e2fe">00174</a>  <span class="keywordtype">REAL(KIND = DBL)</span>, <span class="keywordtype">DIMENSION(1:4) </span>:: hydro_sw_snd, hydro_sw_rcv
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176 <span class="keyword"> END MODULE MPIParams</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Jun 15 17:06:40 2008 for ZSC-2D-DGR-MPI by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Nov 10 16:42:56 2008 for ZSC-2D-DGR-MPI by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

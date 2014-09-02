@@ -1,6 +1,6 @@
 !-------------------------------------------------------------------------------
 ! File     : Common
-! Revision : 1.0 (2008-06-15)
+! Revision : 1.1 (2008-11-10)
 ! Author   : Carlos Rosales Fernandez [carlos.rosales.fernandez(at)gmail.com]
 !-------------------------------------------------------------------------------
 !> @file
@@ -42,8 +42,8 @@
  INTEGER :: MaxStep, RelaxStep, iStep, tCall, tDump, tStat
 
 ! Domain size
- INTEGER :: xmin, xmax, xmin_f, xmax_f, xOffset
- INTEGER :: ymin, ymax, ymin_f, ymax_f, yOffset
+ INTEGER :: xmin, xmax, xmin_f, xmax_f
+ INTEGER :: ymin, ymax, ymin_f, ymax_f
  INTEGER :: xl, xu, xlg, xug, xlg2, xug2, NX
  INTEGER :: yl, yu, ylg, yug, ylg2, yug2, NY
  INTEGER :: xl_f, xu_f, xlg_f, xug_f, xlg2_f, xug2_f, xlg3_f, xug3_f, NX_f
