@@ -1,6 +1,6 @@
 # Makefile for MP-LABS (LBS3D)
 #
-# make CC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
+# make FC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
 #
 # Copyright 2013 Carlos Rosales Fernandez and The University of Texas at Austin.
 # Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC (A*STAR).
@@ -30,27 +30,27 @@ LFLAGS += $(ARCH_FLAGS)
 OBJS = common.o main.o collision.o finalsave.o init.o memalloc.o parameters.o relaxstats.o postcollision.o poststream.o stats.o stream.o vtksave.o
 
 #Link into an excutable
-LBM : $(OBJS); $(CC) $(LFLAGS) $(OBJS) -o lbs3d$(BIN_SUFFIX)
+LBM : $(OBJS); $(FC) $(LFLAGS) $(OBJS) -o lbs3d$(BIN_SUFFIX)
 
 #Compile the common modules
-common.o : common.F90; $(CC) $(CFLAGS) common.F90
+common.o : common.F90; $(FC) $(CFLAGS) common.F90
 
 #Compile the subroutines
 main.o           : main.F90 common.F90 collision.F90 finalsave.F90        \
                    init.F90 memalloc.F90 parameters.F90 postcollision.F90 \
                    poststream.F90 relaxstats.F90 stats.F90 stream.F90     \
-                   vtksave.F90; $(CC) $(CFLAGS) main.F90
-collision.o      : common.F90 collision.F90;  $(CC) $(CFLAGS) collision.F90
-finalsave.o      : common.F90 finalsave.F90;  $(CC) $(CFLAGS) finalsave.F90
-init.o           : common.F90 init.F90;       $(CC) $(CFLAGS) init.F90
-memalloc.o       : common.F90 memalloc.F90;   $(CC) $(CFLAGS) memalloc.F90
-parameters.o     : common.F90 parameters.F90; $(CC) $(CFLAGS) parameters.F90
-relaxstats.o     : common.F90 relaxstats.F90; $(CC) $(CFLAGS) relaxstats.F90
-stats.o          : common.F90 stats.F90;      $(CC) $(CFLAGS) stats.F90
-stream.o         : common.F90 stream.F90;     $(CC) $(CFLAGS) stream.F90
-vtksave.o        : common.F90 vtksave.F90;    $(CC) $(CFLAGS) vtksave.F90
-postcollision.o  : common.F90 postcollision.F90; $(CC) $(CFLAGS) postcollision.F90
-poststream.o     : common.F90 poststream.F90;    $(CC) $(CFLAGS) poststream.F90
+                   vtksave.F90; $(FC) $(CFLAGS) main.F90
+collision.o      : common.F90 collision.F90;  $(FC) $(CFLAGS) collision.F90
+finalsave.o      : common.F90 finalsave.F90;  $(FC) $(CFLAGS) finalsave.F90
+init.o           : common.F90 init.F90;       $(FC) $(CFLAGS) init.F90
+memalloc.o       : common.F90 memalloc.F90;   $(FC) $(CFLAGS) memalloc.F90
+parameters.o     : common.F90 parameters.F90; $(FC) $(CFLAGS) parameters.F90
+relaxstats.o     : common.F90 relaxstats.F90; $(FC) $(CFLAGS) relaxstats.F90
+stats.o          : common.F90 stats.F90;      $(FC) $(CFLAGS) stats.F90
+stream.o         : common.F90 stream.F90;     $(FC) $(CFLAGS) stream.F90
+vtksave.o        : common.F90 vtksave.F90;    $(FC) $(CFLAGS) vtksave.F90
+postcollision.o  : common.F90 postcollision.F90; $(FC) $(CFLAGS) postcollision.F90
+poststream.o     : common.F90 poststream.F90;    $(FC) $(CFLAGS) poststream.F90
 
 #Build options
 build: LBM

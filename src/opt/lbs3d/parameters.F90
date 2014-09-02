@@ -4,7 +4,7 @@
 ! Author     : Carlos Rosales-Fernandez [carlos.rosales.fernandez(at)gmail.com]
 !-------------------------------------------------------------------------------
 ! Read input parameters from files "properties.in" and "discrete.in" and define
-! constants for the simulation in the serial D3Q7/D3Q19 Zheng-Shu-Chew
+! constants for the simulation in the OMP parallel D3Q7/D3Q19 Zheng-Shu-Chew
 ! multiphase LBM.
 !
 ! DISTRO determines if the bubbles are generated randomly using the parameters

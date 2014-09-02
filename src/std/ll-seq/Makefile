@@ -1,6 +1,6 @@
 # Makefile for MP-LABS (LL-2D-STD)
 #
-# make CC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
+# make FC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
 #
 # Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC (A*STAR).
 # Copyright 2013 Carlos Rosales Fernandez and The University of Texas at Austin.
@@ -25,24 +25,24 @@ OBJS   = common.o finaldump.o hydrodynamics.o init.o main.o memalloc.o \
          parameters.o poststream.o prestream.o stats.o vtkplane.o
 
 #Link into an excutable
-LL-2D-STD : $(OBJS); $(CC) $(LFLAGS) $(OBJS) -o LL-2D-STD$(BIN_SUFFIX)
+LL-2D-STD : $(OBJS); $(FC) $(LFLAGS) $(OBJS) -o LL-2D-STD$(BIN_SUFFIX)
 
 #Compile the common modules
-common.o : common.F90; $(CC) $(CFLAGS) common.F90
+common.o : common.F90; $(FC) $(CFLAGS) common.F90
 
 #Compile the subroutines
 main.o               : common.F90 finaldump.F90 hydrodynamics.F90 init.F90 memalloc.F90 \
                        parameters.F90 poststream.F90 prestream.F90 stats.F90          \
-                       vtkplane.F90 main.F90; $(CC) $(CFLAGS) main.F90
-finaldump.o          : common.F90 finaldump.F90; $(CC) $(CFLAGS) finaldump.F90
-hydrodynamics.o      : common.F90 hydrodynamics.F90; $(CC) $(CFLAGS) hydrodynamics.F90
-init.o               : common.F90 stats.F90 vtkplane.F90 init.F90; $(CC) $(CFLAGS) init.F90
-memalloc.o           : common.F90 memalloc.F90; $(CC) $(CFLAGS) memalloc.F90
-parameters.o         : common.F90 parameters.F90; $(CC) $(CFLAGS) parameters.F90
-poststream.o         : common.F90 poststream.F90; $(CC) $(CFLAGS) poststream.F90
-prestream.o          : common.F90 prestream.F90; $(CC) $(CFLAGS) prestream.F90
-stats.o              : common.F90 stats.F90; $(CC) $(CFLAGS) stats.F90
-vtkplane.o           : common.F90 vtkplane.F90; $(CC) $(CFLAGS) vtkplane.F90
+                       vtkplane.F90 main.F90; $(FC) $(CFLAGS) main.F90
+finaldump.o          : common.F90 finaldump.F90; $(FC) $(CFLAGS) finaldump.F90
+hydrodynamics.o      : common.F90 hydrodynamics.F90; $(FC) $(CFLAGS) hydrodynamics.F90
+init.o               : common.F90 stats.F90 vtkplane.F90 init.F90; $(FC) $(CFLAGS) init.F90
+memalloc.o           : common.F90 memalloc.F90; $(FC) $(CFLAGS) memalloc.F90
+parameters.o         : common.F90 parameters.F90; $(FC) $(CFLAGS) parameters.F90
+poststream.o         : common.F90 poststream.F90; $(FC) $(CFLAGS) poststream.F90
+prestream.o          : common.F90 prestream.F90; $(FC) $(CFLAGS) prestream.F90
+stats.o              : common.F90 stats.F90; $(FC) $(CFLAGS) stats.F90
+vtkplane.o           : common.F90 vtkplane.F90; $(FC) $(CFLAGS) vtkplane.F90
 
 
 #Build options

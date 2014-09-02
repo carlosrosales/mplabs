@@ -1,6 +1,6 @@
 # Makefile for MP-LABS (ZSC-2D-DGR)
 #
-# make CC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
+# make FC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
 #
 # Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC (A*STAR).
 # Copyright 2013 Carlos Rosales Fernandez and The University of Texas at Austin.
@@ -25,27 +25,27 @@ OBJS   = common.o collision_f.o collision_g.o differentials.o finaldump.o \
          vtkplane.o
 
 #Link into an excutable
-ZSC-2D-DGR : $(OBJS); $(CC) $(LFLAGS) $(OBJS) -o ZSC-2D-DGR$(BIN_SUFFIX)
+ZSC-2D-DGR : $(OBJS); $(FC) $(LFLAGS) $(OBJS) -o ZSC-2D-DGR$(BIN_SUFFIX)
 
 #Compile the common modules
-common.o : common.F90; $(CC) $(CFLAGS) common.F90
+common.o : common.F90; $(FC) $(CFLAGS) common.F90
 
 #Compile the subroutines
 main.o          : common.F90 collision_f.F90 collision_g.F90 differentials.F90        \
                   finaldump.F90 init.F90 memalloc.F90 parameters.F90 stats.F90 stream.F90 \
-                  update.F90 vtkplane.F90 main.F90 ; $(CC) $(CFLAGS) main.F90
-collision_f.o   : common.F90 collision_f.F90; $(CC) $(CFLAGS) collision_f.F90
-collision_g.o   : common.F90 collision_g.F90; $(CC) $(CFLAGS) collision_g.F90
-differentials.o : common.F90 differentials.F90; $(CC) $(CFLAGS) differentials.F90
-finaldump.o     : common.F90 finaldump.F90; $(CC) $(CFLAGS) finaldump.F90
+                  update.F90 vtkplane.F90 main.F90 ; $(FC) $(CFLAGS) main.F90
+collision_f.o   : common.F90 collision_f.F90; $(FC) $(CFLAGS) collision_f.F90
+collision_g.o   : common.F90 collision_g.F90; $(FC) $(CFLAGS) collision_g.F90
+differentials.o : common.F90 differentials.F90; $(FC) $(CFLAGS) differentials.F90
+finaldump.o     : common.F90 finaldump.F90; $(FC) $(CFLAGS) finaldump.F90
 init.o          : common.F90 differentials.F90 stats.F90 vtkplane.F90                 \
-                  init.F90; $(CC) $(CFLAGS) init.F90
-memalloc.o      : common.F90 memalloc.F90; $(CC) $(CFLAGS) memalloc.F90
-parameters.o    : common.F90 parameters.F90; $(CC) $(CFLAGS) parameters.F90
-stats.o         : common.F90 stats.F90; $(CC) $(CFLAGS) stats.F90
-stream.o        : common.F90 stream.F90; $(CC) $(CFLAGS) stream.F90
-update.o        : common.F90 differentials.F90; $(CC) $(CFLAGS) update.F90
-vtkplane.o      : common.F90 vtkplane.F90; $(CC) $(CFLAGS) vtkplane.F90
+                  init.F90; $(FC) $(CFLAGS) init.F90
+memalloc.o      : common.F90 memalloc.F90; $(FC) $(CFLAGS) memalloc.F90
+parameters.o    : common.F90 parameters.F90; $(FC) $(CFLAGS) parameters.F90
+stats.o         : common.F90 stats.F90; $(FC) $(CFLAGS) stats.F90
+stream.o        : common.F90 stream.F90; $(FC) $(CFLAGS) stream.F90
+update.o        : common.F90 differentials.F90; $(FC) $(CFLAGS) update.F90
+vtkplane.o      : common.F90 vtkplane.F90; $(FC) $(CFLAGS) vtkplane.F90
 
 # Make options
 all: ZSC-2D-DGR

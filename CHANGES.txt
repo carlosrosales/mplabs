@@ -1,5 +1,11 @@
+v1.3 (2013-11-12) Carlos Rosales Fernandez
+==========================================
+* Added MPI version of LBS3D
+* Added development versions of LBS3D
+* Corrected compiler name to FC/MPIFC in Makefiles
+
 v1.2 (2013-09-10) Carlos Rosales Fernandez
-=======================================
+==========================================
 * Changed extension from .f to .F90 to automate preprocessing
 
 * Added performance focused version of ZSC-3D code
@@ -9,7 +15,7 @@ v1.2 (2013-09-10) Carlos Rosales Fernandez
 * New installation procedure using Make instad of shell script
 
 v1.1 (2008-11-10) Carlos Rosales Fernandez
-=======================================
+==========================================
 
 * In "ll-dgr-src": Corrected "update_f.f", "vgrid.f" and
   "common.f" to make sure periodic boundary conditions 

@@ -1,6 +1,6 @@
 # Makefile for MP-LABS (ZSC-3D-STD-MPI)
 #
-# make MPICC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
+# make MPIFC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
 #
 # Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC (A*STAR).
 # Copyright 2013 Carlos Rosales Fernandez and The University of Texas at Austin.
@@ -26,29 +26,29 @@ OBJS   = common.o main.o collision.o collisionrelax.o finaldump.o init.o   \
          stats.o stream.o vgrid.o vtkdump.o
 
 #Link into an excutable
-ZSC-3D-STD-MPI : $(OBJS); $(MPICC) $(LFLAGS) $(OBJS) -o ZSC-3D-STD-MPI$(BIN_SUFFIX)
+ZSC-3D-STD-MPI : $(OBJS); $(MPIFC) $(LFLAGS) $(OBJS) -o ZSC-3D-STD-MPI$(BIN_SUFFIX)
 
 #Compile the common modules
-common.o : common.F90; $(MPICC) $(CFLAGS) common.F90
+common.o : common.F90; $(MPIFC) $(CFLAGS) common.F90
 
 #Compile the subroutines
 main.o           : main.F90 common.F90 collision.F90 collisionrelax.F90 finaldump.F90    \
                    init.F90 memalloc.F90 parameters.F90 postcollision.F90 poststream.F90 \
                    relaxstats.F90 stats.F90 stream.F90 vgrid.F90                       \
-                   vtkdump.F90; $(MPICC) $(CFLAGS) main.F90
-collision.o      : common.F90 collision.F90; $(MPICC) $(CFLAGS) collision.F90
-collisionrelax.o : common.F90 collisionrelax.F90; $(MPICC) $(CFLAGS) collisionrelax.F90
-finaldump.o      : common.F90 finaldump.F90; $(MPICC) $(CFLAGS) finaldump.F90
-init.o           : common.F90 init.F90 stats.F90 vtkdump.F90; $(MPICC) $(CFLAGS) init.F90
-memalloc.o       : common.F90 memalloc.F90; $(MPICC) $(CFLAGS) memalloc.F90
-parameters.o     : common.F90 parameters.F90; $(MPICC) $(CFLAGS) parameters.F90
-postcollision.o  : common.F90 postcollision.F90; $(MPICC) $(CFLAGS) postcollision.F90
-poststream.o     : common.F90 poststream.F90; $(MPICC) $(CFLAGS) poststream.F90
-relaxstats.o     : common.F90 relaxstats.F90; $(MPICC) $(CFLAGS) relaxstats.F90
-stats.o          : common.F90 stats.F90; $(MPICC) $(CFLAGS) stats.F90
-stream.o         : common.F90 stream.F90; $(MPICC) $(CFLAGS) stream.F90
-vgrid.o          : common.F90 vgrid.F90; $(MPICC) $(CFLAGS) vgrid.F90
-vtkdump.o        : common.F90 vtkdump.F90; $(MPICC) $(CFLAGS) vtkdump.F90
+                   vtkdump.F90; $(MPIFC) $(CFLAGS) main.F90
+collision.o      : common.F90 collision.F90; $(MPIFC) $(CFLAGS) collision.F90
+collisionrelax.o : common.F90 collisionrelax.F90; $(MPIFC) $(CFLAGS) collisionrelax.F90
+finaldump.o      : common.F90 finaldump.F90; $(MPIFC) $(CFLAGS) finaldump.F90
+init.o           : common.F90 init.F90 stats.F90 vtkdump.F90; $(MPIFC) $(CFLAGS) init.F90
+memalloc.o       : common.F90 memalloc.F90; $(MPIFC) $(CFLAGS) memalloc.F90
+parameters.o     : common.F90 parameters.F90; $(MPIFC) $(CFLAGS) parameters.F90
+postcollision.o  : common.F90 postcollision.F90; $(MPIFC) $(CFLAGS) postcollision.F90
+poststream.o     : common.F90 poststream.F90; $(MPIFC) $(CFLAGS) poststream.F90
+relaxstats.o     : common.F90 relaxstats.F90; $(MPIFC) $(CFLAGS) relaxstats.F90
+stats.o          : common.F90 stats.F90; $(MPIFC) $(CFLAGS) stats.F90
+stream.o         : common.F90 stream.F90; $(MPIFC) $(CFLAGS) stream.F90
+vgrid.o          : common.F90 vgrid.F90; $(MPIFC) $(CFLAGS) vgrid.F90
+vtkdump.o        : common.F90 vtkdump.F90; $(MPIFC) $(CFLAGS) vtkdump.F90
 
 #Build options
 all: ZSC-3D-STD-MPI

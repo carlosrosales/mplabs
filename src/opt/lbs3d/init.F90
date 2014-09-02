@@ -3,7 +3,7 @@
 ! Revision   : 1.2 (2013/09/10)
 ! Author     : Carlos Rosales-Fernandez [carlos.rosales.fernandez(at)gmail.com]
 !-------------------------------------------------------------------------------
-! Initialization step for the serial D3Q7/D3Q19 Zheng-Shu-Chew multiphase LBM.
+! Initialization step for the OpenMP D3Q7/D3Q19 Zheng-Shu-Chew multiphase LBM.
 ! Smeared interface initialized using equilibrium order parameter function for
 ! each drop defined in the input (in the range [R-IntWidth,R+IntWidth]). The
 ! distribution functions f and g are initialized to their equilibrium values

@@ -4,21 +4,11 @@
 ! Author     : Carlos Rosales-Fernandez [carlos.rosales.fernandez(at)gmail.com]
 !-------------------------------------------------------------------------------
 ! Calculate average velocity, mass conservation factor and effective radius of
-! the drop, and write them to file "stats.out" for the parallel D2Q5/D2Q9
+! the drop, and write them to file "stats.out" for the OMP parallel D3Q7/D3Q19
 ! Zheng-Shu-Chew multiphase LBM.
 !
 ! The effective radius is calculated assuming the drop is a perfect circle with
 ! area given by Vol = (4/3)*Pi*R*R*R.
-!
-! Parallel implementation using MPI. Variables with the "Local" ending refer to
-! quantities calculated locally in the current processor, vproc. Variables with
-! the ending "Global" refer to qunatities calculated on the complete domain.
-! The parameters stored in the MPI excahnge buffers are defined below.
-!
-! data(1) : Volume
-! data(2) : Ux
-! data(3) : Uy
-! data(4) : Uz
 !-------------------------------------------------------------------------------
 
 !-------------------------------------------------------------------------------

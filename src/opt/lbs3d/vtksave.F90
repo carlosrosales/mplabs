@@ -5,8 +5,8 @@
 !-------------------------------------------------------------------------------
 ! Save order parameter, pressure, and velocity data in VTK format for the
 ! serial D3Q7/D3Q19 Zheng-Shu-Chew multiphase LBM. Filenames are
-! 'DATA_YYY_XXXXXXX.VTK' where YYY is the processor number and XXXXXXX is the
-! time step. These files are understood by Paraview.
+! 'EVOL_XXXXXXX.VTK' where XXXXXXX is the time step. These files are understood 
+! by Paraview.
 !-------------------------------------------------------------------------------
 
 !-------------------------------------------------------------------------------

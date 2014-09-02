@@ -2,10 +2,10 @@
 #
 # Makefile for MP-LABS.
 #
-# Change CC, MPICC and the corresponding flags to match your own compiler in
+# Change FC, MPIFC and the corresponding flags to match your own compiler in
 # file "Makefile.in". You should not have to edit this file at all.
 #
-# v1.2                                  (2013-09-10)  Carlos Rosales Fernandez
+# v1.3                                  (2013-11-12)  Carlos Rosales Fernandez
 
 include ./Makefile.in
 
@@ -20,13 +20,17 @@ INSTALL_LOG="`pwd`/mplabs_install.log"
 
 SEPARATOR="======================================================================"
 PKG      ="Package  : MP-LABS"
-VER      ="Version  : 1.2"
+VER      ="Version  : 1.3"
 DATE     ="Date     : `date +%Y.%m.%d`"
 SYSTEM   ="System   : `uname -sr`"
-COMPILER ="Compiler : `$(CC) --version | head -n 1`"
+COMPILER ="Compiler : `$(FC) --version | head -n 1`"
 
+mplabs: logs lbs3d seq par check-build
 all: logs lbs3d seq par check-build
 opt: logs lbs3d check-build
+opt-install: lbs3d-install check-install
+devel: logs development check-build
+devel-install: development-install check-install
 sequential: logs seq check-build
 parallel: logs par check-build
 install: opt-install seq-install par-install check-install
@@ -60,15 +64,75 @@ logs:
 
 lbs3d:
 # LBS3D opt code
-	@echo "Generating OMP binaries..." | tee -a $(BUILD_LOG)
+	@echo "Generating OMP binary..." | tee -a $(BUILD_LOG)
 	@$(MAKE) --directory=`pwd`/src/opt/lbs3d build |& tee -a $(BUILD_LOG)
 	@echo                                          | tee -a $(BUILD_LOG)
 
-opt-install:
+	@echo "Generating MPI+OMP binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/opt/lbs3d-mpi build |& tee -a $(BUILD_LOG)
+	@echo                                              | tee -a $(BUILD_LOG)
+
+lbs3d-install:
 # LBS3D install
-	@echo "Installing OMP binaries..." | tee -a $(INSTALL_LOG)
+	@echo "Installing OMP binary..." | tee -a $(INSTALL_LOG)
 	@$(MAKE) --directory=`pwd`/src/opt/lbs3d install |& tee -a $(INSTALL_LOG)
 	@echo                                            | tee -a $(INSTALL_LOG)
+
+	@echo "Installing MPI+OMP binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/opt/lbs3d-mpi install |& tee -a $(INSTALL_LOG)
+	@echo                                                | tee -a $(INSTALL_LOG)
+
+development:
+# LBS3d developemnt code
+	@echo "Generating Sequential binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/sequential build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+	@echo "Generating OMP_v1 binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v1 build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+	@echo "Generating OMP_v2 binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v2 build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+	@echo "Generating SOA binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/soa build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+	@echo "Generating SOA_AL binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/soa_aligned build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+	@echo "Generating OFFLOAD binary..." | tee -a $(BUILD_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/offload build |& tee -a $(BUILD_LOG)
+	@echo                                                 | tee -a $(BUILD_LOG)
+
+development-install:
+# LBS3d development code
+	@echo "Installing Sequential binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/sequential install |& tee -a $(INSTALL_LOG)
+	@echo                                                 | tee -a $(INSTALL_LOG)
+
+	@echo "Installing OMP_v1 binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v1 install |& tee -a $(INSTALL_LOG)
+	@echo                                                 | tee -a $(INSTALL_LOG)
+
+	@echo "Installing OMP_v2 binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v2 install |& tee -a $(INSTALL_LOG)
+	@echo                                                 | tee -a $(INSTALL_LOG)
+
+	@echo "Installing SOA binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/soa install |& tee -a $(INSTALL_LOG)
+	@echo                                                 | tee -a $(INSTALL_LOG)
+
+	@echo "Installing SOA_AL binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/soa_aligned install |& tee -a $(INSTALL_LOG)
+	@echo                                                 | tee -a $(INSTALL_LOG)
+
+	@echo "Installing OFFLOAD binary..." | tee -a $(INSTALL_LOG)
+	@$(MAKE) --directory=`pwd`/src/devel/offload install |& tee -a $(INSTALL_LOG)
+	@echo 
 
 seq:
 # All purely sequential code
@@ -126,7 +190,14 @@ par-install:
 
 clean:
 # Cleanup all directories
+	@$(MAKE) --directory=`pwd`/src/devel/offload clean
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v1 clean
+	@$(MAKE) --directory=`pwd`/src/devel/omp_v2 clean
+	@$(MAKE) --directory=`pwd`/src/devel/sequential clean
+	@$(MAKE) --directory=`pwd`/src/devel/soa clean
+	@$(MAKE) --directory=`pwd`/src/devel/soa_aligned clean
 	@$(MAKE) --directory=`pwd`/src/opt/lbs3d clean
+	@$(MAKE) --directory=`pwd`/src/opt/lbs3d-mpi clean
 	@$(MAKE) --directory=`pwd`/src/std/ll-dgr-seq clean
 	@$(MAKE) --directory=`pwd`/src/std/ll-seq clean
 	@$(MAKE) --directory=`pwd`/src/std/zsc-dgr-seq clean

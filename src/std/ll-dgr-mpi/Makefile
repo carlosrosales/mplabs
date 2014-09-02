@@ -1,6 +1,6 @@
 # Makefile for MP-LABS (LL-2D-DGR-MPI)
 #
-# make MPICC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
+# make MPIFC=compiler CFLAGS="compiler flags" LFLAGS="linker flags" target
 #
 # Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC (A*STAR).
 # Copyright 2013 Carlos Rosales Fernandez and The University of Texas at Austin.
@@ -27,10 +27,10 @@ OBJS   = common.o finaldump.o hydrodynamics_g.o hydrodynamics_f.o init.o main.o\
          update_g.o vgrid.o vtkplane.o
 
 #Link into an excutable
-LL-2D-DGR-MPI : $(OBJS); $(MPICC) $(LFLAGS) $(OBJS) -o LL-2D-DGR-MPI$(BIN_SUFFIX)
+LL-2D-DGR-MPI : $(OBJS); $(MPIFC) $(LFLAGS) $(OBJS) -o LL-2D-DGR-MPI$(BIN_SUFFIX)
 
 #Compile the common modules
-common.o : common.F90; $(MPICC) $(CFLAGS) common.F90
+common.o : common.F90; $(MPIFC) $(CFLAGS) common.F90
 
 #Compile the subroutines
 main.o                 : common.F90 finaldump.F90 hydrodynamics_g.F90               \
@@ -39,28 +39,28 @@ main.o                 : common.F90 finaldump.F90 hydrodynamics_g.F90           
                          mpi_update_rho_g.F90 parameters.F90 poststream_g.F90       \
                          poststream_f.F90 prestream_g.F90 prestream_f.F90 stats.F90   \
                          update_f.F90 update_g.F90 vgrid.F90 vtkplane.F90             \
-                         main.F90; $(MPICC) $(CFLAGS) main.F90
-finaldump.o            : common.F90 finaldump.F90; $(MPICC) $(CFLAGS) finaldump.F90
-hydrodynamics_g.o      : common.F90 hydrodynamics_g.F90; $(MPICC) $(CFLAGS) hydrodynamics_g.F90
-hydrodynamics_f.o      : common.F90 hydrodynamics_f.F90; $(MPICC) $(CFLAGS) hydrodynamics_f.F90
+                         main.F90; $(MPIFC) $(CFLAGS) main.F90
+finaldump.o            : common.F90 finaldump.F90; $(MPIFC) $(CFLAGS) finaldump.F90
+hydrodynamics_g.o      : common.F90 hydrodynamics_g.F90; $(MPIFC) $(CFLAGS) hydrodynamics_g.F90
+hydrodynamics_f.o      : common.F90 hydrodynamics_f.F90; $(MPIFC) $(CFLAGS) hydrodynamics_f.F90
 init.o                 : common.F90 mpi_update_rho_g.F90 stats.F90 vtkplane.F90       \
-                         init.F90; $(MPICC) $(CFLAGS) init.F90
-memalloc.o             : common.F90 memalloc.F90; $(MPICC) $(CFLAGS) memalloc.F90
-mpi_update_f.o         : common.F90 mpi_update_f.F90; $(MPICC) $(CFLAGS) mpi_update_f.F90
-mpi_update_g.o         : common.F90 mpi_update_g.F90; $(MPICC) $(CFLAGS) mpi_update_g.F90
-mpi_update_hydro.o     : common.F90 mpi_update_hydro.F90; $(MPICC) $(CFLAGS) mpi_update_hydro.F90
-mpi_update_rho_f.o     : common.F90 mpi_update_rho_f.F90; $(MPICC) $(CFLAGS) mpi_update_rho_f.F90
-mpi_update_rho_g.o     : common.F90 mpi_update_rho_g.F90; $(MPICC) $(CFLAGS) mpi_update_rho_g.F90
-parameters.o           : common.F90 parameters.F90; $(MPICC) $(CFLAGS) parameters.F90
-poststream_g.o         : common.F90 poststream_g.F90; $(MPICC) $(CFLAGS) poststream_g.F90
-poststream_f.o         : common.F90 poststream_f.F90; $(MPICC) $(CFLAGS) poststream_f.F90
-prestream_g.o          : common.F90 prestream_g.F90; $(MPICC) $(CFLAGS) prestream_g.F90
-prestream_f.o          : common.F90 prestream_f.F90; $(MPICC) $(CFLAGS) prestream_f.F90
-stats.o                : common.F90 stats.F90; $(MPICC) $(CFLAGS) stats.F90
-update_f.o             : common.F90 update_f.F90; $(MPICC) $(CFLAGS) update_f.F90
-update_g.o             : common.F90 update_g.F90; $(MPICC) $(CFLAGS) update_g.F90
-vgrid.o                : common.F90 vgrid.F90; $(MPICC) $(CFLAGS) vgrid.F90
-vtkplane.o             : common.F90 vtkplane.F90; $(MPICC) $(CFLAGS) vtkplane.F90
+                         init.F90; $(MPIFC) $(CFLAGS) init.F90
+memalloc.o             : common.F90 memalloc.F90; $(MPIFC) $(CFLAGS) memalloc.F90
+mpi_update_f.o         : common.F90 mpi_update_f.F90; $(MPIFC) $(CFLAGS) mpi_update_f.F90
+mpi_update_g.o         : common.F90 mpi_update_g.F90; $(MPIFC) $(CFLAGS) mpi_update_g.F90
+mpi_update_hydro.o     : common.F90 mpi_update_hydro.F90; $(MPIFC) $(CFLAGS) mpi_update_hydro.F90
+mpi_update_rho_f.o     : common.F90 mpi_update_rho_f.F90; $(MPIFC) $(CFLAGS) mpi_update_rho_f.F90
+mpi_update_rho_g.o     : common.F90 mpi_update_rho_g.F90; $(MPIFC) $(CFLAGS) mpi_update_rho_g.F90
+parameters.o           : common.F90 parameters.F90; $(MPIFC) $(CFLAGS) parameters.F90
+poststream_g.o         : common.F90 poststream_g.F90; $(MPIFC) $(CFLAGS) poststream_g.F90
+poststream_f.o         : common.F90 poststream_f.F90; $(MPIFC) $(CFLAGS) poststream_f.F90
+prestream_g.o          : common.F90 prestream_g.F90; $(MPIFC) $(CFLAGS) prestream_g.F90
+prestream_f.o          : common.F90 prestream_f.F90; $(MPIFC) $(CFLAGS) prestream_f.F90
+stats.o                : common.F90 stats.F90; $(MPIFC) $(CFLAGS) stats.F90
+update_f.o             : common.F90 update_f.F90; $(MPIFC) $(CFLAGS) update_f.F90
+update_g.o             : common.F90 update_g.F90; $(MPIFC) $(CFLAGS) update_g.F90
+vgrid.o                : common.F90 vgrid.F90; $(MPIFC) $(CFLAGS) vgrid.F90
+vtkplane.o             : common.F90 vtkplane.F90; $(MPIFC) $(CFLAGS) vtkplane.F90
 
 #Build options
 all: LL-2D-DGR-MPI
