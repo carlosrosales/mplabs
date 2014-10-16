@@ -1,3 +1,7 @@
+v1.6 (2014-10-16) Carlos Rosales Fernandez
+==========================================
+* Improved build process and documentation.
+
 v1.5 (2014-09-02) Carlos Rosales Fernandez
 ==========================================
 * Bugfix revision.

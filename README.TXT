@@ -24,8 +24,20 @@ To install everything type:
 $ make
 $ make install
 
+=== INSTALLATION OF XEON PHI VERSION ===
+
+You can build both host CPU and Phi coprocessor versions of the LBS3D code:
+
+$ make opt compiler=intel build=cpu suffix=.cpu
+$ make opt-install compiler=intel build=cpu suffix=.cpu
+
+$ make opt compiler=intel build=mic suffix=.mic
+$ make opt-install compiler=intel build=mic suffix=.mic
 
 === CHANGELOG ===
+Revision 1.6: (2014-10-16)
+		  * Improved build process and documentation.
+
 Revision 1.5: (2014-09-02)
 		  * Bugfix revision. Fixed issue in lbs3d-mpi only.
 
