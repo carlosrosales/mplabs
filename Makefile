@@ -5,12 +5,12 @@
 # Change FC, MPIFC and the corresponding flags to match your own compiler in
 # file "Makefile.in". You should not have to edit this file at all.
 #
-# v1.3                                  (2013-11-12)  Carlos Rosales Fernandez
+# v1.6                                  (2014-10-16)  Carlos Rosales Fernandez
 
 include ./Makefile.in
 
 COPYRIGHT1="Copyright 2008 Carlos Rosales Fernandez, David S. Whyte and IHPC."
-COPYRIGHT2="Copyright 2013 Carlos Rosales Fernandez, and UT Austin."
+COPYRIGHT2="Copyright 2014 Carlos Rosales Fernandez, and UT Austin."
 COPYRIGHT3="License: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>"
 COPYRIGHT4="This is free software: you are free to change and redistribute it."
 COPYRIGHT5="There is NO WARRANTY, to the extent permitted by law."
@@ -20,7 +20,7 @@ INSTALL_LOG="`pwd`/mplabs_install.log"
 
 SEPARATOR="======================================================================"
 PKG      ="Package  : MP-LABS"
-VER      ="Version  : 1.3"
+VER      ="Version  : 1.6"
 DATE     ="Date     : `date +%Y.%m.%d`"
 SYSTEM   ="System   : `uname -sr`"
 COMPILER ="Compiler : `$(FC) --version | head -n 1`"

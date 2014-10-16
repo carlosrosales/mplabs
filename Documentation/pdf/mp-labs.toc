@@ -4,6 +4,7 @@
 \contentsline {subsection}{\numberline {1.2.1}Requirements}{2}{subsection.1.2.1}
 \contentsline {subsection}{\numberline {1.2.2}Compilation}{3}{subsection.1.2.2}
 \contentsline {subsection}{\numberline {1.2.3}Multiple Versions}{4}{subsection.1.2.3}
+\contentsline {subsection}{\numberline {1.2.4}Building the optimized Xeon Phi Version}{5}{subsection.1.2.4}
 \contentsline {chapter}{\numberline {2}Input Files}{6}{chapter.2}
 \contentsline {section}{\numberline {2.1}Lee-Lin Properties File}{6}{section.2.1}
 \contentsline {section}{\numberline {2.2}Zheng-Shu-Chew Properties File}{8}{section.2.2}

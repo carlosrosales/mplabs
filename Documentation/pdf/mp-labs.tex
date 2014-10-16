@@ -50,7 +50,7 @@
 \verb+ +
 \vspace{1em}
 \begin{flushright}
-\huge\bf MP-LABS v1.5\\
+\huge\bf MP-LABS v1.6\\
 \rule{\textwidth}{4pt}
 \large{\bf MultiPhase Lattice Boltzmann Suite User Guide\\
 Document Revision 1.0\\
@@ -77,7 +77,7 @@ High Performance Computing \\
 Texas Advanced Computing Center\\
 The University of Texas at Austin\\
 \vspace{1cm}
-Copyright \copyright 2013 Carlos Rosales Fern\'andez and the University of Texas at Austin.
+Copyright \copyright 2014 Carlos Rosales Fern\'andez and the University of Texas at Austin.
 \end{flushleft}
 \newpage
 
@@ -85,13 +85,13 @@ Copyright \copyright 2013 Carlos Rosales Fern\'andez and the University of Texas
 \pagenumbering{roman}	%for preface sections only
 \section*{Preface}\noindent \verb+MP-LABS+ is a suite of numerical simulation tools for multiphase flows based on the free energy Lattice Boltzmann Method (LBM). The code allows for the simulation of quasi-incompressible two-phase flows, and uses multiphase models that allow for large density ratios. \verb+MP-LABS+ provides implementations that use periodic boundary conditions, but it is written in a way that allows for easy inclusion of different boundary conditions. The output from \verb+MP-LABS+ is in plain ASCII and VTK format, and can be analyzed using other Open Source tools such as Gnuplot \cite{gnuplot} and Paraview \cite{paraview}.
 
-\noindent Revision 1.5 is a bugfix for the lbs3d-mpi optimized code. Details regarding this optimized version can be found in \cite{Rosales2013}
+\noindent Revision 1.6 adds a simplified build system that makes easier to build Xeon Phi executables.
 
 \noindent The objective of the \verb+MP-LABS+ project is to provide a core set of routines that are well documented, highly portable, and have proven to perform well in a variety of systems. The source code is written in Fortran 90, OpenMP  and MPI and uses separate subroutines for most tasks in order to make modifications easier. An examples of research work performed using this code are references \cite{Rosales2007} and \cite{Rosales2010}.
 
 \noindent We believe in open source software for pushing the frontiers of science and engineering, and we encourage everyone to publish open source software under the GPL License. You are free to use, copy, modify and distribute any element of \verb+MP-LABS+ under the GNU General Public License version 3. Finally, although the GPL License does not require you to contact us, the authors would appreciate if you could send an email telling us that you are using \verb+MP-LABS+ and what application you are using the code for.
 
-\noindent The complete package can be downloaded from \verb+code.google.com/p/mplabs+.
+\noindent The complete package can be downloaded from \verb+github.com/carlosrosales/mplabs+.
 
 \vspace{1cm}
 	Carlos Rosales Fern\'andez\\
@@ -112,10 +112,10 @@ Copyright \copyright 2013 Carlos Rosales Fern\'andez and the University of Texas
 \verb+MP-LABS+ is distributed as a series of Fortran 90 subroutine files, and a series of Make files. The complete list of functions is collected in Appendix A.
 
 \section{Quick Install}
-Download \verb+mplabs-1.2.tar.gz+ from \verb+code.google.com/p/mplabs+. Unzip the \verb+mplabs-1.2.tar.gz+ file in a suitable directory:
+Download \verb+mplabs-1.6.tar.gz+ from \verb+github.com/carlosrosales/mplabs+. Unzip the \verb+mplabs-1.6.tar.gz+ file in a suitable directory:
 
 \begin{tabular}{l}
-\texttt{\$ tar -zxvf mplabs-1.3.tar.gz}
+\texttt{\$ tar -zxvf mplabs-1.6.tar.gz}
 \end{tabular}
 
 Once the file has been unpackaged move into the \verb+mplabs+ directory and type:
@@ -130,17 +130,17 @@ Assuming you meet all the installation requirements, the binary files are now in
 
 
 \section{Installation}
-Download \verb+mplabs-1.2.tar.gz+ from \verb+code.google.com/p/mplabs+. Unzip the \verb+mplabs-1.2.tar.gz+ file in a suitable directory. This can be done in a linux system by typing on the command line:
+Download \verb+mplabs-1.6.tar.gz+ from \verb+github.com/carlosrosales/mplabs+. Unzip the \verb+mplabs-1.6.tar.gz+ file in a suitable directory. This can be done in a linux system by typing on the command line:
 
 \begin{tabular}{l}
-\texttt{\$ tar -zxvf mplabs-1.2.tar.gz}
+\texttt{\$ tar -zxvf mplabs-1.6.tar.gz}
 \end{tabular}
 
 or, if tar does not accept the "z" option in your system:
 
 \begin{tabular}{l}
-\texttt{\$ gunzip mplabs-1.2.tar.gz}\\
-\texttt{\$ tar -xvf mplabs-1.2.tar}
+\texttt{\$ gunzip mplabs-1.6.tar.gz}\\
+\texttt{\$ tar -xvf mplabs-1.6.tar}
 \end{tabular}
 
 The following directories will be created:
@@ -199,7 +199,7 @@ Name & Model & Type & OMP & MPI & Dual Grid & Source Dir\\
 \hline
 \end{tabular}
 
-In addition to the baseline codes in \texttt{mplabs/src/std} and \texttt{mplabs/src/opt} a number of intermediate development codes have been provided to illustrate the process of improving performance of a code, starting from a na\"ive serial implementation and progressing to a code equivalent to LBS3D. These codes follow the Zheng \textit{et al} 3D model, and are located in the \texttt{mplabs/src/devel} directory. An example of offload execution to the Intel Xeon Phi while also using the host CPU is provided. The following table provides additioanl details:
+In addition to the baseline codes in \texttt{mplabs/src/std} and \texttt{mplabs/src/opt} a number of intermediate development codes have been provided to illustrate the process of improving performance of a code, starting from a na\"ive serial implementation and progressing to a code equivalent to LBS3D. These codes follow the Zheng \textit{et al} 3D model, and are located in the \texttt{mplabs/src/devel} directory. An example of offload execution to the Intel Xeon Phi while also using the host CPU is provided. The following table provides additional details:
 
  \begin{tabular}{|l|c|c|l|}
 \hline
@@ -262,6 +262,19 @@ This will compile the relevant source code and move the binary files to \verb+IN
 Use the provided variable \verb+BIN_SUFFIX+ in order to add an informative suffix to your binary files. This could be an indication of the compiler flags used such as \verb+.dbg+ or \verb+.opt+, or an indication of the architecture such as \verb+.cpu+ or \verb+.mic+.
 
 This variable can be defined in the command line when invoking Make, exported tot he environment, or defined in \verb+Makefile.in+. The definition in Makefile.in will take precedence.
+
+\subsection{Building the optimized Xeon Phi Version}
+A simple way to build a Xeon Phi compatible version is provided. Use the following options to generate both host CPU and Xeon Phi versions of the \verb+LBS3D+ code:
+
+\begin{tabular}{l}
+\texttt{\$ make opt compiler=intel build=cpu suffix=.cpu}\\
+\texttt{\$ make opt-install compiler=intel build=cpu suffix=.cpu}\\
+\texttt{\$ make clean}\\
+\texttt{\$ make opt compiler=intel build=mic suffix=.mic}\\
+\texttt{\$ make opt-install compiler=intel build=mic suffix=.mic}
+\end{tabular}
+
+An example appropriate for running a symmetric execution that uses 3 total MPI tasks (suggested configuration is 2 MPI tasks on the Phi coprocessor and 1 task on the host CPU) is provided under \verb+/examples/opt/lbs3d-symmetric+.
 
 \chapter{Input Files}
 There are two input files required to run any simulation, one called \verb+properties.in+ which contains all the simulation parameters, and another one called \verb+discrete.in+ which contains a description of the discrete phase.
