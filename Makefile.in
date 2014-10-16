@@ -9,14 +9,14 @@
 # ---------------
 #   export FC=ifort
 #   export MPIFC=mpif90
-#   export CFLAGS="-c -O3 -free"
-#   export LFLAGS="   -O3"
-#   export ARCH_FLAGS="-xHOST"
-#   export OMP_FLAGS="-openmp"
+#   export CFLAGS=-c -O3 -free
+#   export LFLAGS=   -O3
+#   export ARCH_FLAGS=-xHOST
+#   export OMP_FLAGS=-openmp
 #
 # In some systems you may have to use mpiifort instead of ifort for MPICC.
 #
-# v1.3                                  (2013-11-12)  Carlos Rosales Fernandez
+# v1.5                                  (2014-10-16)  Carlos Rosales Fernandez
 
 # Set the compilation flags depending on the input options
 
